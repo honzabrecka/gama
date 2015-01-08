@@ -1,0 +1,29 @@
+{
+  "name": "gama",
+  "version": "0.0.0",
+  "description": "A practical math/geometry library for functional JavaScript, based on ramda.",
+  "keywords": [
+    "gama",
+    "geometry",
+    "math",
+    "library",
+    "functional",
+    "immutable"
+  ],
+  "author": "jan.brecka@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:honzabrecka/gama.git"
+  },
+  "main": "",
+  "dependencies": {
+    "ramda": "0.8.0"
+  },
+  "devDependencies": {
+    "gulp": "3.8.*",
+    "gulp-istanbul": "0.*",
+    "gulp-jshint": "1.*",
+    "gulp-mocha": "2.*"
+  }
+}
