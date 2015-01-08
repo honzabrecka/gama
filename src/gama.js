@@ -155,19 +155,25 @@ g.scaleVector = R.op(function(by, vector) {
 //----------------------------------------------
 // polygon
 
+var minX = R.pipe(R.map(R.prop('x')), R.min);
+var minY = R.pipe(R.map(R.prop('y')), R.min);
+var maxX = R.pipe(R.map(R.prop('x')), R.max);
+var maxY = R.pipe(R.map(R.prop('y')), R.max);
+
 g.polygonMinVertex = function(polygon) {
   return g.Point(
-    R.pipe(R.map(R.prop('x')), R.min)(polygon.vertices),
-    R.pipe(R.map(R.prop('y')), R.min)(polygon.vertices)
+    minX(polygon.vertices),
+    minY(polygon.vertices)
   );
 };
 
 g.polygonMaxVertex = function(polygon) {
   return g.Point(
-    R.pipe(R.map(R.prop('x')), R.max)(polygon.vertices),
-    R.pipe(R.map(R.prop('y')), R.max)(polygon.vertices)
+    maxX(polygon.vertices),
+    maxY(polygon.vertices)
   );
 };
+
 
 g.polygonBoundingBox = function(polygon) {
   var min = g.polygonMinVertex(polygon);
@@ -181,14 +187,15 @@ g.polygonBoundingBox = function(polygon) {
   );
 };
 
-g.polygonAxes = function(polygon) {
-  return R.map.idx(function(vertex, i, vertices) {
+g.polygonAxes = R.pipe(
+  R.prop('vertices'),
+  R.map.idx(function(vertex, i, vertices) {
     return g.normal(g.Vector(
       vertices[i],
       vertices[(i + 1) % vertices.length]
     ));
-  })(polygon.vertices);
-};
+  })
+);
 
 //----------------------------------------------
 // collision detections
@@ -202,12 +209,12 @@ g.projectionsOverlap = R.op(function(a, b) {
   return R.head(b) <= R.last(a) && R.last(b) >= R.head(a);
 });
 
-var projectPolygonToAxis = R.op(function(axis, polygon) {
-  return R.pipe(
-    R.map(R.pipe(g.projectPointToAxis(axis), g.dot(axis))),
+var projectPolygonToAxis = R.op(
+  R.pipe(
+    R.useWith(R.map, R.converge(R.pipe, g.projectPointToAxis, g.dot), R.prop('vertices')), 
     sortAsc
-  )(polygon.vertices);
-});
+  )
+);
 
 g.testPointRectangle = R.op(function(point, rectangle) {
   return point.x >= rectangle.x && point.x <= rectangle.x + rectangle.width && point.y >= rectangle.y && point.y <= rectangle.y + rectangle.height;
