@@ -1,1 +1,1 @@
-# gama
+# Γ [![Build Status](https://travis-ci.org/honzabrecka/gama.svg?branch=master)](https://travis-ci.org/honzabrecka/gama)
