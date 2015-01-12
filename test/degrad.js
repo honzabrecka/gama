@@ -7,17 +7,17 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
-var g = require('../src/gama');
+var gama = require('../src/gama');
 
 describe('deg/rad', function()
 {
   it('rad2deg', function()
   {
-    assert.equal(180, g.rad2deg(Math.PI));
+    assert.equal(180, gama.rad2deg(Math.PI));
   });
 
   it('deg2rad', function()
   {
-    assert.equal(Math.PI, g.deg2rad(180));
+    assert.equal(Math.PI, gama.deg2rad(180));
   });
 });

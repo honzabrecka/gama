@@ -13,7 +13,7 @@ var R = require('ramda');
  *
  * @exports gama
  */
-var g = exports;
+var gama = exports;
 
 var sortAsc = R.sort(function(a, b) {
   return a - b;
@@ -32,9 +32,9 @@ var sortAsc = R.sort(function(a, b) {
  * @param {Point}
  * @example
  * 
- * g.Point(1, 2)// -> {x: 1, y: 2}
+ * gama.Point(1, 2)// -> {x: 1, y: 2}
  */
-g.Point = function(x, y) {
+gama.Point = function(x, y) {
   return {
     x: x,
     y: y
@@ -51,12 +51,12 @@ g.Point = function(x, y) {
  * @param {Vector}
  * @example
  * 
- * g.Vector(1, 2)// -> {x: 1, y: 2}
- * g.Vector(g.Point(1, 2), g.Point(3, 4))// -> {x: 2, y: 2}
+ * gama.Vector(1, 2)// -> {x: 1, y: 2}
+ * gama.Vector(gama.Point(1, 2), gama.Point(3, 4))// -> {x: 2, y: 2}
  */
-g.Vector = R.op(function(x, y) {
-  if (g.isPoint(x) && g.isPoint(y)) {
-    return g.subtract(x, y);
+gama.Vector = R.op(function(x, y) {
+  if (gama.isPoint(x) && gama.isPoint(y)) {
+    return gama.subtract(x, y);
   }
 
   return {
@@ -77,9 +77,9 @@ g.Vector = R.op(function(x, y) {
  * @param {Rectangle}
  * @example
  * 
- * g.Rectangle(1, 2, 3, 4)// -> {x: 1, y: 2, width: 3, height: 4}
+ * gama.Rectangle(1, 2, 3, 4)// -> {x: 1, y: 2, width: 3, height: 4}
  */
-g.Rectangle = function(x, y, width, height) {
+gama.Rectangle = function(x, y, width, height) {
   return {
     x: x,
     y: y,
@@ -98,9 +98,9 @@ g.Rectangle = function(x, y, width, height) {
  * @example
  * 
  * // triangle
- * g.Polygon([g.Point(1, 2), g.Point(2, 3), g.Point(1, 3)])
+ * gama.Polygon([gama.Point(1, 2), gama.Point(2, 3), gama.Point(1, 3)])
  */
-g.Polygon = function(vertices) {
+gama.Polygon = function(vertices) {
   return {
     vertices: vertices
   };
@@ -116,9 +116,9 @@ g.Polygon = function(vertices) {
  * @param {Circle}
  * @example
  * 
- * g.Circle(g.Point(1, 2), 2)
+ * gama.Circle(gama.Point(1, 2), 2)
  */
-g.Circle = function(position, radius) {
+gama.Circle = function(position, radius) {
   return {
     position: position,
     radius: radius
@@ -139,9 +139,9 @@ g.Circle = function(position, radius) {
  * @param {Matrix}
  * @example
  * 
- * g.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 3, 4, 5, 6]
+ * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 3, 4, 5, 6]
  */
-g.Matrix = function(a, b, c, d, tx, ty) {
+gama.Matrix = function(a, b, c, d, tx, ty) {
   return [a, b, c, d, tx, ty];
 };
 
@@ -153,10 +153,10 @@ g.Matrix = function(a, b, c, d, tx, ty) {
  * @param {Matrix}
  * @example
  * 
- * g.EmptyMatrix()// -> [1, 0, 0, 1, 0, 0]
+ * gama.EmptyMatrix()// -> [1, 0, 0, 1, 0, 0]
  */
-g.EmptyMatrix = function() {
-  return g.Matrix(1, 0, 0, 1, 0, 0);
+gama.EmptyMatrix = function() {
+  return gama.Matrix(1, 0, 0, 1, 0, 0);
 };
 
 //----------------------------------------------
@@ -172,7 +172,7 @@ var PI2 = 2 * Math.PI;
  * @param {Number}
  * @return {Number}
  */
-g.deg2rad = function(rotation) {
+gama.deg2rad = function(rotation) {
   return rotation * PI2 / 360;
 };
 
@@ -184,7 +184,7 @@ g.deg2rad = function(rotation) {
  * @param {Number}
  * @return {Number}
  */
-g.rad2deg = function(rotation) {
+gama.rad2deg = function(rotation) {
   return rotation * 360 / PI2;
 };
 
@@ -200,12 +200,12 @@ g.rad2deg = function(rotation) {
  * @return {Boolean}
  * @example
  * 
- * g.isPoint(g.Vector(1, 2))// -> true
- * g.isPoint(g.Point(1, 2))// -> true
- * g.isPoint({x: 1, y: 2})// -> true
- * g.isPoint('s')// -> false
+ * gama.isPoint(gama.Vector(1, 2))// -> true
+ * gama.isPoint(gama.Point(1, 2))// -> true
+ * gama.isPoint({x: 1, y: 2})// -> true
+ * gama.isPoint('s')// -> false
  */
-g.isPoint = R.and(R.has('x'), R.has('y'));
+gama.isPoint = R.and(R.has('x'), R.has('y'));
 
 /**
  * Checks whether given value is vector (contains x and y properties).
@@ -216,12 +216,12 @@ g.isPoint = R.and(R.has('x'), R.has('y'));
  * @return {Boolean}
  * @example
  * 
- * g.isVector(g.Point(1, 2))// -> true
- * g.isVector(g.Vector(1, 2))// -> true
- * g.isVector({x: 1, y: 2})// -> true
- * g.isVector('s')// -> false
+ * gama.isVector(gama.Point(1, 2))// -> true
+ * gama.isVector(gama.Vector(1, 2))// -> true
+ * gama.isVector({x: 1, y: 2})// -> true
+ * gama.isVector('s')// -> false
  */
-g.isVector = g.isPoint;
+gama.isVector = gama.isPoint;
 
 /**
  * Adds the coordinates of a point|vector (an object that contains x and y properties)
@@ -234,7 +234,7 @@ g.isVector = g.isPoint;
  * @param {Point|Vector} b
  * @return {Point|Vector}
  */
-g.add = R.op(function(a, b) {
+gama.add = R.op(function(a, b) {
   return {
     x: a.x + b.x,
     y: a.y + b.y
@@ -252,7 +252,7 @@ g.add = R.op(function(a, b) {
  * @param {Point|Vector} b
  * @return {Point|Vector}
  */
-g.subtract = R.op(function(a, b) {
+gama.subtract = R.op(function(a, b) {
   return {
     x: b.x - a.x,
     y: b.y - a.y
@@ -272,8 +272,8 @@ g.subtract = R.op(function(a, b) {
  * @param {Number} angle in rads
  * @return {Point}
  */
-g.rotatePoint = R.curry(function(point, around, angle) {
-  return g.Point(
+gama.rotatePoint = R.curry(function(point, around, angle) {
+  return gama.Point(
     (point.x - around.x) * Math.cos(angle) - (point.y - around.y) * Math.sin(angle) + around.x,
     (point.x - around.x) * Math.sin(angle) + (point.y - around.y) * Math.cos(angle) + around.y
   );
@@ -288,8 +288,8 @@ g.rotatePoint = R.curry(function(point, around, angle) {
  * @param {Point} b
  * @return {Number}
  */
-g.distance2 = R.op(function(a, b) {
-  return g.vectorLength2(g.subtract(a, b));
+gama.distance2 = R.op(function(a, b) {
+  return gama.vectorLength2(gama.subtract(a, b));
 });
 
 /**
@@ -301,8 +301,8 @@ g.distance2 = R.op(function(a, b) {
  * @param {Point} b
  * @return {Number}
  */
-g.distance = R.op(function(a, b) {
-  return Math.sqrt(g.distance2(a, b));
+gama.distance = R.op(function(a, b) {
+  return Math.sqrt(gama.distance2(a, b));
 });
 
 //----------------------------------------------
@@ -316,8 +316,8 @@ g.distance = R.op(function(a, b) {
  * @param {Vector}
  * @return {Vector}
  */
-g.normal = function(vector) {
-  return g.Vector(vector.y, -vector.x);
+gama.normal = function(vector) {
+  return gama.Vector(vector.y, -vector.x);
 };
 
 /**
@@ -329,7 +329,7 @@ g.normal = function(vector) {
  * @param {Vector} b
  * @return {Number}
  */
-g.dot = R.curry(function(a, b) {
+gama.dot = R.curry(function(a, b) {
   return a.x * b.x + a.y * b.y;
 });
 
@@ -341,9 +341,9 @@ g.dot = R.curry(function(a, b) {
  * @param {Vector} vector
  * @return {Vector}
  */
-g.unit = function(vector) {
-  var t = g.vectorLength(vector);
-  return g.Vector(vector.x / t, vector.y / t);
+gama.unit = function(vector) {
+  var t = gama.vectorLength(vector);
+  return gama.Vector(vector.x / t, vector.y / t);
 };
 
 /**
@@ -354,7 +354,7 @@ g.unit = function(vector) {
  * @param {Vector}
  * @return {Number}
  */
-g.vectorLength2 = function(vector) {
+gama.vectorLength2 = function(vector) {
   return vector.x * vector.x + vector.y * vector.y;
 };
 
@@ -366,8 +366,8 @@ g.vectorLength2 = function(vector) {
  * @param {Vector}
  * @return {Number}
  */
-g.vectorLength = function(vector) {
-  return Math.sqrt(g.vectorLength2(vector));
+gama.vectorLength = function(vector) {
+  return Math.sqrt(gama.vectorLength2(vector));
 };
 
 /**
@@ -376,8 +376,8 @@ g.vectorLength = function(vector) {
  * @param {Vector} vector
  * @return {Vector}
  */
-g.negate = function(vector) {
-  return g.Vector(-vector.x, -vector.y);
+gama.negate = function(vector) {
+  return gama.Vector(-vector.x, -vector.y);
 };
 
 /**
@@ -389,15 +389,15 @@ g.negate = function(vector) {
  * @return {Vector}
  * @example
  *
- * g.scaleVector(2)(g.Vector(1, 2))// -> g.Vector(2, 4)
- * g.scaleVector(g.Vector(3, 1))(g.Vector(1, 2))// -> g.Vector(3, 2)
+ * gama.scaleVector(2)(gama.Vector(1, 2))// -> gama.Vector(2, 4)
+ * gama.scaleVector(gama.Vector(3, 1))(gama.Vector(1, 2))// -> gama.Vector(3, 2)
  */
-g.scaleVector = R.op(function(by, vector) {
-  if (g.isVector(by)) {
-    return g.Vector(vector.x * by.x, vector.y * by.y);
+gama.scaleVector = R.op(function(by, vector) {
+  if (gama.isVector(by)) {
+    return gama.Vector(vector.x * by.x, vector.y * by.y);
   }
 
-  return g.Vector(vector.x * by, vector.y * by);
+  return gama.Vector(vector.x * by, vector.y * by);
 });
 
 //----------------------------------------------
@@ -416,8 +416,8 @@ var maxY = R.pipe(R.map(R.prop('y')), R.max);
  * @param {Polygon}
  * @return {Point}
  */
-g.polygonMinVertex = function(polygon) {
-  return g.Point(
+gama.polygonMinVertex = function(polygon) {
+  return gama.Point(
     minX(polygon.vertices),
     minY(polygon.vertices)
   );
@@ -431,8 +431,8 @@ g.polygonMinVertex = function(polygon) {
  * @param {Polygon}
  * @return {Point}
  */
-g.polygonMaxVertex = function(polygon) {
-  return g.Point(
+gama.polygonMaxVertex = function(polygon) {
+  return gama.Point(
     maxX(polygon.vertices),
     maxY(polygon.vertices)
   );
@@ -446,11 +446,11 @@ g.polygonMaxVertex = function(polygon) {
  * @param {Polygon}
  * @return {Rectangle}
  */
-g.polygonBoundingBox = function(polygon) {
-  var min = g.polygonMinVertex(polygon);
-  var max = g.polygonMaxVertex(polygon);
+gama.polygonBoundingBox = function(polygon) {
+  var min = gama.polygonMinVertex(polygon);
+  var max = gama.polygonMaxVertex(polygon);
 
-  return g.Rectangle(
+  return gama.Rectangle(
     min.x,
     min.y,
     max.x - min.x,
@@ -466,10 +466,10 @@ g.polygonBoundingBox = function(polygon) {
  * @param {Polygon}
  * @param {Array} List of vectors.
  */
-g.polygonAxes = R.pipe(
+gama.polygonAxes = R.pipe(
   R.prop('vertices'),
   R.map.idx(function(vertex, i, vertices) {
-    return g.normal(g.Vector(
+    return gama.normal(gama.Vector(
       vertices[i],
       vertices[(i + 1) % vertices.length]
     ));
@@ -488,9 +488,9 @@ g.polygonAxes = R.pipe(
  * @param {Point} vertex
  * @param {Point}
  */
-g.projectPointToAxis = R.op(function(axis, vertex) {
+gama.projectPointToAxis = R.op(function(axis, vertex) {
   var t = (vertex.x * axis.x + vertex.y * axis.y) / (axis.x * axis.x + axis.y * axis.y);
-  return g.Point(t * axis.x, t * axis.y);
+  return gama.Point(t * axis.x, t * axis.y);
 });
 
 /**
@@ -502,13 +502,13 @@ g.projectPointToAxis = R.op(function(axis, vertex) {
  * @param {Array} b
  * @param {Boolean}
  */
-g.projectionsOverlap = R.op(function(a, b) {
+gama.projectionsOverlap = R.op(function(a, b) {
   return R.head(b) <= R.last(a) && R.last(b) >= R.head(a);
 });
 
 var projectPolygonToAxis = R.op(
   R.pipe(
-    R.useWith(R.map, R.converge(R.pipe, g.projectPointToAxis, g.dot), R.prop('vertices')), 
+    R.useWith(R.map, R.converge(R.pipe, gama.projectPointToAxis, gama.dot), R.prop('vertices')), 
     sortAsc
   )
 );
@@ -522,7 +522,7 @@ var projectPolygonToAxis = R.op(
  * @param {Rectangle} rectangle
  * @param {Boolean}
  */
-g.testPointRectangle = R.op(function(point, rectangle) {
+gama.testPointRectangle = R.op(function(point, rectangle) {
   return point.x >= rectangle.x && point.x <= rectangle.x + rectangle.width && point.y >= rectangle.y && point.y <= rectangle.y + rectangle.height;
 });
 
@@ -535,8 +535,8 @@ g.testPointRectangle = R.op(function(point, rectangle) {
  * @param {Circle} circle
  * @param {Boolean}
  */
-g.testPointCircle = R.op(function(point, circle) {
-  return g.distance(circle.position, point) <= circle.radius;
+gama.testPointCircle = R.op(function(point, circle) {
+  return gama.distance(circle.position, point) <= circle.radius;
 });
 
 /**
@@ -548,8 +548,8 @@ g.testPointCircle = R.op(function(point, circle) {
  * @param {Circle} b
  * @param {Boolean}
  */
-g.testCircleCircle = R.curry(function(a, b) {
-  return g.distance(a.position, b.position) <= a.radius + b.radius;
+gama.testCircleCircle = R.curry(function(a, b) {
+  return gama.distance(a.position, b.position) <= a.radius + b.radius;
 });
 
 /**
@@ -561,13 +561,13 @@ g.testCircleCircle = R.curry(function(a, b) {
  * @param {Polygon} b
  * @param {Boolean}
  */
-g.testPolygonPolygon = R.curry(function(a, b) {
-  var axes = R.union(g.polygonAxes(a), g.polygonAxes(b));
+gama.testPolygonPolygon = R.curry(function(a, b) {
+  var axes = R.union(gama.polygonAxes(a), gama.polygonAxes(b));
 
   return !R.some(function(axis) {
     var project = projectPolygonToAxis(axis);
 
-    return !g.projectionsOverlap(
+    return !gama.projectionsOverlap(
       project(a),
       project(b)
     );

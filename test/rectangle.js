@@ -7,30 +7,30 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
-var g = require('../src/gama');
+var gama = require('../src/gama');
 
 describe('Rectangle', function()
 {
   it('factory', function()
   {
-    assert.deepEqual({x: 1, y: 2, width: 3, height: 4}, g.Rectangle(1, 2, 3, 4));
+    assert.deepEqual({x: 1, y: 2, width: 3, height: 4}, gama.Rectangle(1, 2, 3, 4));
   });
 
-  var pointInRectangle = g.testPointRectangle(undefined, g.Rectangle(10, 20, 30, 40));
+  var pointInRectangle = gama.testPointRectangle(undefined, gama.Rectangle(10, 20, 30, 40));
 
   it('testPointRectangle (in)', function()
   {
-    assert.equal(true, pointInRectangle(g.Point(15, 25)));
-    assert.equal(true, pointInRectangle(g.Point(10, 25)));
-    assert.equal(true, pointInRectangle(g.Point(40, 25)));
-    assert.equal(true, pointInRectangle(g.Point(15, 20)));
-    assert.equal(true, pointInRectangle(g.Point(15, 60)));
+    assert.equal(true, pointInRectangle(gama.Point(15, 25)));
+    assert.equal(true, pointInRectangle(gama.Point(10, 25)));
+    assert.equal(true, pointInRectangle(gama.Point(40, 25)));
+    assert.equal(true, pointInRectangle(gama.Point(15, 20)));
+    assert.equal(true, pointInRectangle(gama.Point(15, 60)));
   });
   it('testPointRectangle (out)', function()
   {
-    assert.equal(false, pointInRectangle(g.Point(5, 25)));
-    assert.equal(false, pointInRectangle(g.Point(45, 25)));
-    assert.equal(false, pointInRectangle(g.Point(15, 5)));
-    assert.equal(false, pointInRectangle(g.Point(15, 65)));
+    assert.equal(false, pointInRectangle(gama.Point(5, 25)));
+    assert.equal(false, pointInRectangle(gama.Point(45, 25)));
+    assert.equal(false, pointInRectangle(gama.Point(15, 5)));
+    assert.equal(false, pointInRectangle(gama.Point(15, 65)));
   });
 });

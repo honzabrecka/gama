@@ -7,21 +7,21 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
-var g = require('../src/gama');
+var gama = require('../src/gama');
 
 describe('collision test: Point and Circle', function()
 {
   it('point lays in circle', function()
   {
-    var pointLaysInCircle = g.testPointCircle(undefined, g.Circle(
-      g.Point(3, 4),
+    var pointLaysInCircle = gama.testPointCircle(undefined, gama.Circle(
+      gama.Point(3, 4),
       2
     ));
 
-    assert.equal(true, pointLaysInCircle(g.Point(3, 4)));
-    assert.equal(true, pointLaysInCircle(g.Point(2, 4)));
-    assert.equal(true, pointLaysInCircle(g.Point(1, 4)));
-    assert.equal(false, pointLaysInCircle(g.Point(1, 1)));
-    assert.equal(false, pointLaysInCircle(g.Point(1, 2)));
+    assert.equal(true, pointLaysInCircle(gama.Point(3, 4)));
+    assert.equal(true, pointLaysInCircle(gama.Point(2, 4)));
+    assert.equal(true, pointLaysInCircle(gama.Point(1, 4)));
+    assert.equal(false, pointLaysInCircle(gama.Point(1, 1)));
+    assert.equal(false, pointLaysInCircle(gama.Point(1, 2)));
   });
 });

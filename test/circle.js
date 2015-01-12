@@ -7,12 +7,12 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
-var g = require('../src/gama');
+var gama = require('../src/gama');
 
 describe('Circle', function()
 {
   it('factory', function()
   {
-    assert.deepEqual({position: {x: 1, y: 2}, radius: 3}, g.Circle(g.Point(1, 2), 3));
+    assert.deepEqual({position: {x: 1, y: 2}, radius: 3}, gama.Circle(gama.Point(1, 2), 3));
   });
 });

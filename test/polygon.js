@@ -7,82 +7,82 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
-var g = require('../src/gama');
+var gama = require('../src/gama');
 
 describe('Polygon', function()
 {
   it('factory', function()
   {
-    assert.deepEqual({vertices: 'value'}, g.Polygon('value'));
+    assert.deepEqual({vertices: 'value'}, gama.Polygon('value'));
   });
 
   it('polygonAxes', function()
   {
-    var result = g.polygonAxes(g.Polygon([
-      g.Point(0, 0),
-      g.Point(2, 0),
-      g.Point(2, 2),
-      g.Point(0, 2)
+    var result = gama.polygonAxes(gama.Polygon([
+      gama.Point(0, 0),
+      gama.Point(2, 0),
+      gama.Point(2, 2),
+      gama.Point(0, 2)
     ]));
     assert.equal(4, result.length);
-    assert.deepEqual(g.Vector(0, -2), result[0]);
-    assert.deepEqual(g.Vector(2, 0), result[1]);
-    assert.deepEqual(g.Vector(0, 2), result[2]);
-    assert.deepEqual(g.Vector(-2, 0), result[3]);
+    assert.deepEqual(gama.Vector(0, -2), result[0]);
+    assert.deepEqual(gama.Vector(2, 0), result[1]);
+    assert.deepEqual(gama.Vector(0, 2), result[2]);
+    assert.deepEqual(gama.Vector(-2, 0), result[3]);
   });
 
   it('polygonMinVertex', function()
   {
-    var triangle = g.Polygon([
-      g.Point(0, 1),
-      g.Point(1, 3),
-      g.Point(2, 2)
+    var triangle = gama.Polygon([
+      gama.Point(0, 1),
+      gama.Point(1, 3),
+      gama.Point(2, 2)
     ]);
 
-    assert.deepEqual(g.Point(0, 1), g.polygonMinVertex(triangle));
+    assert.deepEqual(gama.Point(0, 1), gama.polygonMinVertex(triangle));
   });
 
   it('polygonMaxVertex', function()
   {
-    var triangle = g.Polygon([
-      g.Point(0, 1),
-      g.Point(1, 3),
-      g.Point(2, 2)
+    var triangle = gama.Polygon([
+      gama.Point(0, 1),
+      gama.Point(1, 3),
+      gama.Point(2, 2)
     ]);
     
-    assert.deepEqual(g.Point(2, 3), g.polygonMaxVertex(triangle));
+    assert.deepEqual(gama.Point(2, 3), gama.polygonMaxVertex(triangle));
   });
 
   it('polygonBoundingBox (all vertices in plus)', function()
   {
-    var triangle = g.Polygon([
-      g.Point(0, 1),
-      g.Point(1, 3),
-      g.Point(2, 2)
+    var triangle = gama.Polygon([
+      gama.Point(0, 1),
+      gama.Point(1, 3),
+      gama.Point(2, 2)
     ]);
     
-    assert.deepEqual(g.Rectangle(0, 1, 2, 2), g.polygonBoundingBox(triangle));
+    assert.deepEqual(gama.Rectangle(0, 1, 2, 2), gama.polygonBoundingBox(triangle));
   });
 
   it('polygonBoundingBox (some vertices in minus)', function()
   {
-    var triangle = g.Polygon([
-      g.Point(-1, 2),
-      g.Point(0, 2),
-      g.Point(1, 0)
+    var triangle = gama.Polygon([
+      gama.Point(-1, 2),
+      gama.Point(0, 2),
+      gama.Point(1, 0)
     ]);
     
-    assert.deepEqual(g.Rectangle(-1, 0, 2, 2), g.polygonBoundingBox(triangle));
+    assert.deepEqual(gama.Rectangle(-1, 0, 2, 2), gama.polygonBoundingBox(triangle));
   });
 
   it('polygonBoundingBox (all vertices in minus)', function()
   {
-    var triangle = g.Polygon([
-      g.Point(-2, 1),
-      g.Point(-1, 1),
-      g.Point(-1, -1)
+    var triangle = gama.Polygon([
+      gama.Point(-2, 1),
+      gama.Point(-1, 1),
+      gama.Point(-1, -1)
     ]);
     
-    assert.deepEqual(g.Rectangle(-2, -1, 1, 2), g.polygonBoundingBox(triangle));
+    assert.deepEqual(gama.Rectangle(-2, -1, 1, 2), gama.polygonBoundingBox(triangle));
   });
 });

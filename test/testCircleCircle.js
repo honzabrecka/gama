@@ -7,51 +7,51 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
-var g = require('../src/gama');
+var gama = require('../src/gama');
 
 describe('collision test: Circle and Circle', function()
 {
-  var circleOverlapsCircle = g.testCircleCircle(g.Circle(
-    g.Point(3, 4),
+  var circleOverlapsCircle = gama.testCircleCircle(gama.Circle(
+    gama.Point(3, 4),
     2
   ));
 
   it('same positions and radiuses', function()
   {
-    assert.equal(true, circleOverlapsCircle(g.Circle(
-      g.Point(3, 4), 
+    assert.equal(true, circleOverlapsCircle(gama.Circle(
+      gama.Point(3, 4), 
       2
     )));
   });
 
   it('same positions, different radiuses', function()
   {
-    assert.equal(true, circleOverlapsCircle(g.Circle(
-      g.Point(3, 4), 
+    assert.equal(true, circleOverlapsCircle(gama.Circle(
+      gama.Point(3, 4), 
       1
     )));
   });
 
   it('overlaps', function()
   {
-    assert.equal(true, circleOverlapsCircle(g.Circle(
-      g.Point(1, 1), 
+    assert.equal(true, circleOverlapsCircle(gama.Circle(
+      gama.Point(1, 1), 
       2
     )));
   });
 
   it('touch', function()
   {
-    assert.equal(true, circleOverlapsCircle(g.Circle(
-      g.Point(0, 4), 
+    assert.equal(true, circleOverlapsCircle(gama.Circle(
+      gama.Point(0, 4), 
       1
     )));
   });
 
   it('outside', function()
   {
-    assert.equal(false, circleOverlapsCircle(g.Circle(
-      g.Point(1, 1), 
+    assert.equal(false, circleOverlapsCircle(gama.Circle(
+      gama.Point(1, 1), 
       1
     )));
   });

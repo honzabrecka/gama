@@ -7,17 +7,17 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
-var g = require('../src/gama');
+var gama = require('../src/gama');
 
 describe('Matrix', function()
 {
   it('factory', function()
   {
-    assert.deepEqual([1, 2, 3, 4, 5, 6], g.Matrix(1, 2, 3, 4, 5, 6));
+    assert.deepEqual([1, 2, 3, 4, 5, 6], gama.Matrix(1, 2, 3, 4, 5, 6));
   });
 
   it('empty matrix factory', function()
   {
-    assert.deepEqual([1, 0, 0, 1, 0, 0], g.EmptyMatrix());
+    assert.deepEqual([1, 0, 0, 1, 0, 0], gama.EmptyMatrix());
   });  
 });
