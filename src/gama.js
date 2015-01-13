@@ -481,10 +481,11 @@ gama.rotate = R.op(function(angle, matrix) {
  * @return {Matrix}
  */
 gama.rotateAboutPoint = R.curry(function(angle, point, matrix) {
-  matrix = gama.translate(point, matrix);
-  matrix = gama.rotate(angle, matrix);
-  matrix = gama.translate(gama.Point(-point.x, -point.y), matrix);
-  return matrix;
+  return R.pipe(
+    gama.translate(point),
+    gama.rotate(angle),
+    gama.translate(gama.negate(point))
+  )(matrix);
 });
 
 //----------------------------------------------
