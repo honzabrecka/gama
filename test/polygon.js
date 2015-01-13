@@ -9,6 +9,17 @@
 var assert = require('assert');
 var gama = require('../src/gama');
 
+function assertPolygon(expected, actual) {
+  var d = .000000000001;
+
+  for (var i = 0; i < expected.vertices.length; i++) {
+    if (Math.abs(expected.vertices[i].x - actual.vertices[i].x) > d
+      || Math.abs(expected.vertices[i].y - actual.vertices[i].y) > d) {
+      assert.fail(actual, expected, 'Vertices doesn\'t match.');
+    }
+  }
+}
+
 describe('Polygon', function()
 {
   it('factory', function()
@@ -84,5 +95,52 @@ describe('Polygon', function()
     ]);
     
     assert.deepEqual(gama.Rectangle(-2, -1, 1, 2), gama.boundingBox(triangle));
+  });
+
+  it('rotatePolygon', function()
+  {
+    var rectangle = gama.Polygon([
+      gama.Point(0, 0),
+      gama.Point(4, 0),
+      gama.Point(4, 2),
+      gama.Point(0, 2)
+    ]);
+    var center = gama.scaleVector(.5, gama.Vector(
+      rectangle.vertices[0],
+      rectangle.vertices[2]
+    ));
+
+    // center, 180°
+    assertPolygon(
+      gama.Polygon([
+        gama.Point(4, 2),
+        gama.Point(0, 2),
+        gama.Point(0, 0),
+        gama.Point(4, 0)
+      ]),
+      gama.rotatePolygon(center, Math.PI)(rectangle)
+    );
+
+    // center, 90°
+    assertPolygon(
+      gama.Polygon([
+        gama.Point(3, -1),
+        gama.Point(3, 3),
+        gama.Point(1, 3),
+        gama.Point(1, -1)
+      ]),
+      gama.rotatePolygon(center, Math.PI * .5)(rectangle)
+    );
+
+    // top left, 90°
+    assertPolygon(
+      gama.Polygon([
+        gama.Point(2, 0),
+        gama.Point(2, 4),
+        gama.Point(0, 4),
+        gama.Point(0, 0)
+      ]),
+      gama.rotatePolygon(center, rectangle.vertices[0])(rectangle)
+    );
   });
 });

@@ -267,12 +267,12 @@ gama.subtract = R.op(function(a, b) {
  *
  * @func
  * @category Function
- * @param {Point} point
  * @param {Point} around
  * @param {Number} angle in rads
+ * @param {Point} point
  * @return {Point}
  */
-gama.rotatePoint = R.curry(function(point, around, angle) {
+gama.rotatePoint = R.curry(function(around, angle, point) {
   return gama.Point(
     (point.x - around.x) * Math.cos(angle) - (point.y - around.y) * Math.sin(angle) + around.x,
     (point.x - around.x) * Math.sin(angle) + (point.y - around.y) * Math.cos(angle) + around.y
@@ -488,6 +488,20 @@ gama.axes = R.pipe(
     ));
   })
 );
+
+/**
+ * Rotates polygon around point by given angle.
+ *
+ * @func
+ * @category Function
+ * @param {Point} around
+ * @param {Number} angle in rads
+ * @param {Polygon} polygon
+ * @return {Polygon}
+ */
+gama.rotatePolygon = R.curry(function(around, angle, polygon) {
+  return gama.Polygon(R.map(gama.rotatePoint(around, angle))(polygon.vertices));
+});
 
 //----------------------------------------------
 // collision detections

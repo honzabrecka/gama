@@ -29,7 +29,7 @@ describe('Point', function()
 
   it('rotatePoint', function()
   {
-    assert.deepEqual(gama.Point(19.030843443754843, 15.891111469379062), gama.rotatePoint(gama.Point(10, 20), gama.Point(20, 30), 7));
+    assert.deepEqual(gama.Point(19.030843443754843, 15.891111469379062), gama.rotatePoint(gama.Point(20, 30), 7)(gama.Point(10, 20)));
   });
 
   it('add', function()
