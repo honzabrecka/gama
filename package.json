@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git@github.com:honzabrecka/gama.git"
   },
-  "main": "",
+  "main": "src/gama.js",
   "dependencies": {
     "ramda": "0.8.0"
   },
