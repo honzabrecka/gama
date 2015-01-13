@@ -126,7 +126,7 @@ gama.Circle = function(position, radius) {
 };
 
 /**
- * Creates a list representing matrix.
+ * Creates a list representing 3x3 matrix.
  *
  * @func
  * @category Function
@@ -139,21 +139,21 @@ gama.Circle = function(position, radius) {
  * @param {Matrix}
  * @example
  * 
- * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 3, 4, 5, 6]
+ * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 0, 3, 4, 0, 5, 6, 1]
  */
 gama.Matrix = function(a, b, c, d, tx, ty) {
-  return [a, b, c, d, tx, ty];
+  return [a, b, 0, c, d, 0, tx, ty, 1];
 };
 
 /**
- * Creates an object representing empty matrix.
+ * Creates a list representing empty 3x3 matrix.
  *
  * @func
  * @category Function
  * @param {Matrix}
  * @example
  * 
- * gama.EmptyMatrix()// -> [1, 0, 0, 1, 0, 0]
+ * gama.EmptyMatrix()// -> [1, 0, 0, 0, 1, 0, 0, 0, 1]
  */
 gama.EmptyMatrix = function() {
   return gama.Matrix(1, 0, 0, 1, 0, 0);
@@ -263,23 +263,6 @@ gama.subtract = R.op(function(a, b) {
 // point
 
 /**
- * Rotates point around another point by given angle.
- *
- * @func
- * @category Function
- * @param {Point} around
- * @param {Number} angle in rads
- * @param {Point} point
- * @return {Point}
- */
-gama.rotatePoint = R.curry(function(around, angle, point) {
-  return gama.Point(
-    (point.x - around.x) * Math.cos(angle) - (point.y - around.y) * Math.sin(angle) + around.x,
-    (point.x - around.x) * Math.sin(angle) + (point.y - around.y) * Math.cos(angle) + around.y
-  );
-});
-
-/**
  * Calculates the distance between two points.
  *
  * @func
@@ -303,6 +286,20 @@ gama.distance2 = R.op(function(a, b) {
  */
 gama.distance = R.op(function(a, b) {
   return Math.sqrt(gama.distance2(a, b));
+});
+
+/**
+ * Applies transformation matrix on given point.
+ *
+ * @param {Matrix} matrix
+ * @param {Point} point
+ * @return {Point}
+ */
+gama.transformPoint = R.op(function(matrix, point) {
+  return gama.Point(
+    matrix[0] * point.x + matrix[3] * point.y + matrix[6],
+    matrix[1] * point.x + matrix[4] * point.y + matrix[7]
+  );
 });
 
 //----------------------------------------------
@@ -414,6 +411,83 @@ gama.scaleVector = R.op(function(by, vector) {
 });
 
 //----------------------------------------------
+// matrix
+
+/**
+ * Multiplies two matrices.
+ *
+ * @param {Vector} vector
+ * @param {Matrix} matrix
+ * @return {Matrix}
+ */
+gama.multiply = R.op(function(a, b) {
+  return [
+    b[0] * a[0] + b[1] * a[3] + b[2] * a[6],
+    b[0] * a[1] + b[1] * a[4] + b[2] * a[7],
+    b[0] * a[2] + b[1] * a[5] + b[2] * a[8],
+    b[3] * a[0] + b[4] * a[3] + b[5] * a[6],
+    b[3] * a[1] + b[4] * a[4] + b[5] * a[7],
+    b[3] * a[2] + b[4] * a[5] + b[5] * a[8],
+    b[6] * a[0] + b[7] * a[3] + b[8] * a[6],
+    b[6] * a[1] + b[7] * a[4] + b[8] * a[7],
+    b[6] * a[2] + b[7] * a[5] + b[8] * a[8]
+  ];
+});
+
+/**
+ * Translates the matrix.
+ *
+ * @param {Vector} vector
+ * @param {Matrix} matrix
+ * @return {Matrix}
+ */
+gama.translate = R.op(function(vector, matrix) {
+  var transformation = gama.Matrix(1, 0, 0, 1, vector.x, vector.y);
+  return gama.multiply(matrix, transformation);
+});
+
+/**
+ * Applies a scaling transformation to the matrix.
+ *
+ * @param {Vector} vector
+ * @param {Matrix} matrix
+ * @return {Matrix}
+ */
+gama.scale = R.curry(function(vector, matrix) {
+  var transformation = gama.Matrix(vector.x, 0, 0, vector.y, 0, 0);
+  return gama.multiply(matrix, transformation);
+});
+
+/**
+ * Applies a rotation transformation to the matrix.
+ *
+ * @param {Number} angle
+ * @param {Matrix} matrix
+ * @return {Matrix}
+ */
+gama.rotate = R.op(function(angle, matrix) {
+  var cos = Math.cos(angle);
+  var sin = Math.sin(angle);
+  var transformation = gama.Matrix(cos, sin, -sin, cos, 0, 0);
+  return gama.multiply(matrix, transformation);
+});
+
+/**
+ * Applies a rotation transformation to the matrix.
+ *
+ * @param {Number} angle
+ * @param {Point} point
+ * @param {Matrix} matrix
+ * @return {Matrix}
+ */
+gama.rotateAboutPoint = R.curry(function(angle, point, matrix) {
+  matrix = gama.translate(point, matrix);
+  matrix = gama.rotate(angle, matrix);
+  matrix = gama.translate(gama.Vector(-point.x, -point.y), matrix);
+  return matrix;
+});
+
+//----------------------------------------------
 // polygon
 
 var minX = R.pipe(R.map(R.prop('x')), R.min);
@@ -490,17 +564,14 @@ gama.axes = R.pipe(
 );
 
 /**
- * Rotates polygon around point by given angle.
+ * Applies transformation matrix on given polygon.
  *
- * @func
- * @category Function
- * @param {Point} around
- * @param {Number} angle in rads
+ * @param {Matrix} matrix
  * @param {Polygon} polygon
- * @return {Polygon}
+ * @return {Point}
  */
-gama.rotatePolygon = R.curry(function(around, angle, polygon) {
-  return gama.Polygon(R.map(gama.rotatePoint(around, angle))(polygon.vertices));
+gama.transformPolygon = R.op(function(matrix, polygon) {
+  return gama.Polygon(R.map(gama.transformPoint(matrix))(polygon.vertices));
 });
 
 //----------------------------------------------

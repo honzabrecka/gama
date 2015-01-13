@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
+var asserts = require('./asserts');
 var gama = require('../src/gama');
 
 describe('Point', function()
@@ -27,28 +28,37 @@ describe('Point', function()
     assert.equal(false, gama.isPoint(4));
   });
 
-  it('rotatePoint', function()
+  it('rotatePointAboutPoint', function()
   {
-    assert.deepEqual(gama.Point(19.030843443754843, 15.891111469379062), gama.rotatePoint(gama.Point(20, 30), 7)(gama.Point(10, 20)));
+    var matrix = gama.rotateAboutPoint(7, gama.Point(20, 30))(gama.EmptyMatrix());
+    asserts.points(gama.Point(19.030843443754843, 15.891111469379062), gama.transformPoint(matrix)(gama.Point(10, 20)));
+  });
+
+  it('transformPoint', function() {
+    var matrix = gama.EmptyMatrix();
+
+    asserts.points(gama.Point(1, 2), gama.transformPoint(matrix)(gama.Point(1, 2)));
+    asserts.points(gama.Point(5, 10), gama.transformPoint(gama.translate(gama.Vector(4, 8), matrix))(gama.Point(1, 2)));
+    asserts.points(gama.Point(-2, 1), gama.transformPoint(gama.rotate(Math.PI * .5, matrix))(gama.Point(1, 2)));
   });
 
   it('add', function()
   {
-    assert.deepEqual(gama.Point(6, 8), gama.add(gama.Point(1, 2), gama.Point(5, 6)));
+    asserts.points(gama.Point(6, 8), gama.add(gama.Point(1, 2), gama.Point(5, 6)));
   });
 
   it('subtract', function()
   {
-    assert.deepEqual(gama.Point(-4, -6), gama.subtract(gama.Point(5, 8), gama.Point(1, 2)));
+    asserts.points(gama.Point(-4, -6), gama.subtract(gama.Point(5, 8), gama.Point(1, 2)));
   });
 
   it('distance2', function()
   {
-    assert.equal(2, gama.distance2(gama.Point(1, 1), gama.Point(2, 2)));
+    asserts.points(2, gama.distance2(gama.Point(1, 1), gama.Point(2, 2)));
   });
 
   it('distance', function()
   {
-    assert.equal(1.4142135623730951, gama.distance(gama.Point(1, 1), gama.Point(2, 2)));
+    asserts.points(1.4142135623730951, gama.distance(gama.Point(1, 1), gama.Point(2, 2)));
   });
 });
