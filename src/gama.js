@@ -553,6 +553,27 @@ gama.testPointCircle = R.op(function(point, circle) {
 });
 
 /**
+ * Checks whether point lies inside polygon.
+ *
+ * @func
+ * @category Function
+ * @param {Point} point
+ * @param {Polygon} polygon
+ * @param {Boolean}
+ */
+gama.testPointPolygon = R.op(function(point, polygon) {
+  return R.pipe(
+    R.map.idx(function(vertex, i, vertices) {
+      var prevVertex = vertices[(vertices.length + i - 1) % vertices.length];
+
+      return ((vertex.y > point.y) != (prevVertex.y > point.y)) &&
+        (point.x <= (prevVertex.x - vertex.x) * (point.y - vertex.y) / (prevVertex.y - vertex.y) + vertex.x);
+    }),
+    R.reduce(function(a, b) { return b ? !a : a; }, false)
+  )(polygon.vertices);
+});
+
+/**
  * Checks whether two circles overlap.
  *
  * @func
