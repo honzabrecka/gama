@@ -61,6 +61,12 @@ describe('Vector', function()
     assert.equal(30, gama.dot(gama.Vector(3.6, 4.8), gama.Vector(3, 4)));
   });
 
+  it('angle', function()
+  {
+    assert.equal(0, gama.angle(gama.Vector(-2, 4), gama.Vector(2, 1)));
+    assert.equal(0.7592566023652966, gama.angle(gama.Vector(-2, 4), gama.Vector(1, 4)));
+  });
+
   it('unit', function()
   {
     var result = gama.unit(gama.Vector(1, 2));

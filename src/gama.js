@@ -334,6 +334,19 @@ gama.dot = R.curry(function(a, b) {
 });
 
 /**
+ * Caclulates angle between two vectors.
+ *
+ * @func
+ * @category Function
+ * @param {Vector} a
+ * @param {Vector} b
+ * @return {Number} cos
+ */
+gama.angle = R.op(function(a, b) {
+  return gama.dot(a, b) / (gama.vectorLength(a) * gama.vectorLength(b));
+});
+
+/**
  * Generates a unit vector.
  *
  * @func
