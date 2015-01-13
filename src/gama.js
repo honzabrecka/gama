@@ -29,7 +29,7 @@ var sortAsc = R.sort(function(a, b) {
  * @category Function
  * @param {Number} x
  * @param {Number} y
- * @param {Point}
+ * @return {Point}
  * @example
  * 
  * gama.Point(1, 2)// -> {x: 1, y: 2}
@@ -48,7 +48,7 @@ gama.Point = function(x, y) {
  * @category Function
  * @param {Number|Point} x
  * @param {Number|Point} y
- * @param {Vector}
+ * @return {Vector}
  * @example
  * 
  * gama.Vector(1, 2)// -> {x: 1, y: 2}
@@ -74,7 +74,7 @@ gama.Vector = R.op(function(x, y) {
  * @param {Number} y
  * @param {Number} width
  * @param {Number} height
- * @param {Rectangle}
+ * @return {Rectangle}
  * @example
  * 
  * gama.Rectangle(1, 2, 3, 4)// -> {x: 1, y: 2, width: 3, height: 4}
@@ -94,7 +94,7 @@ gama.Rectangle = function(x, y, width, height) {
  * @func
  * @category Function
  * @param {Array} vertices List of vertices.
- * @param {Polygon}
+ * @return {Polygon}
  * @example
  * 
  * // triangle
@@ -113,7 +113,7 @@ gama.Polygon = function(vertices) {
  * @category Function
  * @param {Point} position
  * @param {Number} radius
- * @param {Circle}
+ * @return {Circle}
  * @example
  * 
  * gama.Circle(gama.Point(1, 2), 2)
@@ -136,7 +136,7 @@ gama.Circle = function(position, radius) {
  * @param {Number} d
  * @param {Number} tx
  * @param {Number} ty
- * @param {Matrix}
+ * @return {Matrix}
  * @example
  * 
  * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 0, 3, 4, 0, 5, 6, 1]
@@ -150,7 +150,7 @@ gama.Matrix = function(a, b, c, d, tx, ty) {
  *
  * @func
  * @category Function
- * @param {Matrix}
+ * @return {Matrix}
  * @example
  * 
  * gama.EmptyMatrix()// -> [1, 0, 0, 0, 1, 0, 0, 0, 1]
