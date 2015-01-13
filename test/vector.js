@@ -72,7 +72,7 @@ describe('Vector', function()
     var result = gama.unit(gama.Vector(1, 2));
     assert.equal(0.4472135954999579, result.x);
     assert.equal(0.8944271909999159, result.y);
-    assert.equal(1, Math.round(gama.vectorLength(result)));
+    assert.equal(1, Math.round(gama.length(result)));
   });
 
   it('negate', function()
@@ -82,14 +82,14 @@ describe('Vector', function()
     assert.equal(-2, result.y);
   });
 
-  it('vectorLength2', function()
+  it('length2', function()
   {
-    assert.equal(5, gama.vectorLength2(gama.Vector(1, 2)));
+    assert.equal(5, gama.length2(gama.Vector(1, 2)));
   });
 
-  it('vectorLength', function()
+  it('length', function()
   {
-    assert.equal(2.23606797749979, gama.vectorLength(gama.Vector(1, 2)));
+    assert.equal(2.23606797749979, gama.length(gama.Vector(1, 2)));
   });
 
   it('scaleVector by vector', function()

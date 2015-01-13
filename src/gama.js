@@ -289,7 +289,7 @@ gama.rotatePoint = R.curry(function(point, around, angle) {
  * @return {Number}
  */
 gama.distance2 = R.op(function(a, b) {
-  return gama.vectorLength2(gama.subtract(a, b));
+  return gama.length2(gama.subtract(a, b));
 });
 
 /**
@@ -343,7 +343,7 @@ gama.dot = R.curry(function(a, b) {
  * @return {Number} cos
  */
 gama.angle = R.op(function(a, b) {
-  return gama.dot(a, b) / (gama.vectorLength(a) * gama.vectorLength(b));
+  return gama.dot(a, b) / (gama.length(a) * gama.length(b));
 });
 
 /**
@@ -355,7 +355,7 @@ gama.angle = R.op(function(a, b) {
  * @return {Vector}
  */
 gama.unit = function(vector) {
-  var t = gama.vectorLength(vector);
+  var t = gama.length(vector);
   return gama.Vector(vector.x / t, vector.y / t);
 };
 
@@ -367,7 +367,7 @@ gama.unit = function(vector) {
  * @param {Vector}
  * @return {Number}
  */
-gama.vectorLength2 = function(vector) {
+gama.length2 = function(vector) {
   return vector.x * vector.x + vector.y * vector.y;
 };
 
@@ -379,8 +379,8 @@ gama.vectorLength2 = function(vector) {
  * @param {Vector}
  * @return {Number}
  */
-gama.vectorLength = function(vector) {
-  return Math.sqrt(gama.vectorLength2(vector));
+gama.length = function(vector) {
+  return Math.sqrt(gama.length2(vector));
 };
 
 /**
@@ -429,7 +429,7 @@ var maxY = R.pipe(R.map(R.prop('y')), R.max);
  * @param {Polygon}
  * @return {Point}
  */
-gama.polygonMinVertex = function(polygon) {
+gama.minVertex = function(polygon) {
   return gama.Point(
     minX(polygon.vertices),
     minY(polygon.vertices)
@@ -444,7 +444,7 @@ gama.polygonMinVertex = function(polygon) {
  * @param {Polygon}
  * @return {Point}
  */
-gama.polygonMaxVertex = function(polygon) {
+gama.maxVertex = function(polygon) {
   return gama.Point(
     maxX(polygon.vertices),
     maxY(polygon.vertices)
@@ -459,9 +459,9 @@ gama.polygonMaxVertex = function(polygon) {
  * @param {Polygon}
  * @return {Rectangle}
  */
-gama.polygonBoundingBox = function(polygon) {
-  var min = gama.polygonMinVertex(polygon);
-  var max = gama.polygonMaxVertex(polygon);
+gama.boundingBox = function(polygon) {
+  var min = gama.minVertex(polygon);
+  var max = gama.maxVertex(polygon);
 
   return gama.Rectangle(
     min.x,
@@ -479,7 +479,7 @@ gama.polygonBoundingBox = function(polygon) {
  * @param {Polygon}
  * @param {Array} List of vectors.
  */
-gama.polygonAxes = R.pipe(
+gama.axes = R.pipe(
   R.prop('vertices'),
   R.map.idx(function(vertex, i, vertices) {
     return gama.normal(gama.Vector(
@@ -596,7 +596,7 @@ gama.testCircleCircle = R.curry(function(a, b) {
  * @param {Boolean}
  */
 gama.testPolygonPolygon = R.curry(function(a, b) {
-  var axes = R.union(gama.polygonAxes(a), gama.polygonAxes(b));
+  var axes = R.union(gama.axes(a), gama.axes(b));
 
   return !R.some(function(axis) {
     var project = projectPolygonToAxis(axis);
