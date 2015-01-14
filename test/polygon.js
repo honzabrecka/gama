@@ -127,7 +127,6 @@ describe('Polygon', function()
     );
 
     // top left, 90°
-    console.log(rotatePolygon(rectangle.vertices[0], Math.PI * .5, rectangle));
     asserts.polygons(
       gama.Polygon([
         gama.Point(0, 0),
