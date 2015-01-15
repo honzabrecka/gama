@@ -552,7 +552,7 @@ gama.boundingBox = function(polygon) {
  * @func
  * @category Function
  * @param {Polygon}
- * @param {Array} List of vectors.
+ * @return {Array} List of vectors.
  */
 gama.axes = R.pipe(
   R.prop('vertices'),
@@ -585,7 +585,7 @@ gama.transformPolygon = R.op(function(matrix, polygon) {
  * @category Function
  * @param {Vector} axis
  * @param {Point} vertex
- * @param {Point}
+ * @return {Point}
  */
 gama.projectPointToAxis = R.op(function(axis, vertex) {
   var t = (vertex.x * axis.x + vertex.y * axis.y) / (axis.x * axis.x + axis.y * axis.y);
@@ -599,7 +599,7 @@ gama.projectPointToAxis = R.op(function(axis, vertex) {
  * @category Function
  * @param {Array} a
  * @param {Array} b
- * @param {Boolean}
+ * @return {Boolean}
  */
 gama.projectionsOverlap = R.op(function(a, b) {
   return R.head(b) <= R.last(a) && R.last(b) >= R.head(a);
@@ -619,7 +619,7 @@ var projectPolygonToAxis = R.op(
  * @category Function
  * @param {Point} point
  * @param {Rectangle} rectangle
- * @param {Boolean}
+ * @return {Boolean}
  */
 gama.testPointRectangle = R.op(function(point, rectangle) {
   return point.x >= rectangle.x && point.x <= rectangle.x + rectangle.width && point.y >= rectangle.y && point.y <= rectangle.y + rectangle.height;
@@ -632,7 +632,7 @@ gama.testPointRectangle = R.op(function(point, rectangle) {
  * @category Function
  * @param {Point} point
  * @param {Circle} circle
- * @param {Boolean}
+ * @return {Boolean}
  */
 gama.testPointCircle = R.op(function(point, circle) {
   return gama.distance(circle.position, point) <= circle.radius;
@@ -645,7 +645,7 @@ gama.testPointCircle = R.op(function(point, circle) {
  * @category Function
  * @param {Point} point
  * @param {Polygon} polygon
- * @param {Boolean}
+ * @return {Boolean}
  */
 gama.testPointPolygon = R.op(function(point, polygon) {
   return R.pipe(
@@ -666,7 +666,7 @@ gama.testPointPolygon = R.op(function(point, polygon) {
  * @category Function
  * @param {Circle} a
  * @param {Circle} b
- * @param {Boolean}
+ * @return {Boolean}
  */
 gama.testCircleCircle = R.curry(function(a, b) {
   return gama.distance(a.position, b.position) <= a.radius + b.radius;
@@ -679,7 +679,7 @@ gama.testCircleCircle = R.curry(function(a, b) {
  * @category Function
  * @param {Polygon} a
  * @param {Polygon} b
- * @param {Boolean}
+ * @return {Boolean}
  */
 gama.testPolygonPolygon = R.curry(function(a, b) {
   var axes = R.union(gama.axes(a), gama.axes(b));
