@@ -9,13 +9,17 @@
 var assert = require('assert');
 var asserts = exports;
 
-asserts.points = function(expected, actual) {
-  var d = .00000000001;
+var d = .00000000001;
 
-  if (Math.abs(expected.x - actual.x) > d
-    || Math.abs(expected.y - actual.y) > d) {
-    assert.fail(actual, expected, 'Points do not match.');
+asserts.almostEqual = function(expected, actual) {
+  if (Math.abs(expected - actual) > d) {
+    assert.fail(actual, expected, 'Numbers are not almost equal.');
   }
+};
+
+asserts.points = function(expected, actual) {
+  asserts.almostEqual(expected.x, actual.x);
+  asserts.almostEqual(expected.y, actual.y);
 }
 
 asserts.vectors = asserts.points;
