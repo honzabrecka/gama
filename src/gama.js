@@ -575,6 +575,36 @@ gama.transformPolygon = R.op(function(matrix, polygon) {
   return gama.Polygon(R.map(gama.transformPoint(matrix))(polygon.vertices));
 });
 
+/**
+ * Checks whether given polygon is concave.
+ *
+ * @func
+ * @category Function
+ * @param {Polygon}
+ * @return {Boolean}
+ */
+gama.isConcave = R.pipe(
+  gama.axes,
+  R.map.idx(function(axis, i, axes) {
+    return gama.dot(axis, axes[(i + 1) % axes.length]);
+  }),
+  R.map.idx(function(result, i, results) {
+    var nextResult = results[(i + 1) % results.length];
+    return result == 0 || nextResult == 0 || (result < 0 && nextResult < 0);
+  }),
+  R.some(R.eq(false))
+);
+
+/**
+ * Checks whether given polygon is convex.
+ *
+ * @func
+ * @category Function
+ * @param {Polygon}
+ * @return {Boolean}
+ */
+gama.isConvex = R.not(gama.isConcave);
+
 //----------------------------------------------
 // collision detections
 

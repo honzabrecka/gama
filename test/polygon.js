@@ -137,4 +137,38 @@ describe('Polygon', function()
       rotatePolygon(rectangle.vertices[0], gama.deg2rad(90), rectangle)
     );
   });
+
+  it('isConvex', function()
+  {
+    var triangle = gama.Polygon([
+      gama.Point(-2, 1),
+      gama.Point(-1, 1),
+      gama.Point(-1, -1)
+    ]);
+    var rectangle = gama.Polygon([
+      gama.Point(0, 0),
+      gama.Point(4, 0),
+      gama.Point(4, 2),
+      gama.Point(0, 2)
+    ]);
+
+    assert.equal(true, gama.isConvex(triangle));
+    assert.equal(true, gama.isConvex(rectangle));
+    assert.equal(false, gama.isConcave(triangle));
+    assert.equal(false, gama.isConcave(rectangle));
+  });
+
+  it('isConcave', function()
+  {
+    var polygon = gama.Polygon([
+      gama.Point(0, 0),
+      gama.Point(4, 0),
+      gama.Point(4, 2),
+      gama.Point(2, 1),
+      gama.Point(0, 2)
+    ]);
+
+    assert.equal(true, gama.isConcave(polygon));
+    assert.equal(false, gama.isConvex(polygon));
+  });
 });
