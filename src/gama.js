@@ -567,6 +567,8 @@ gama.axes = R.pipe(
 /**
  * Applies transformation matrix on given polygon.
  *
+ * @func
+ * @category Function
  * @param {Matrix} matrix
  * @param {Polygon} polygon
  * @return {Point}
