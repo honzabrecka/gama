@@ -26,10 +26,10 @@ describe('Polygon', function()
       gama.Point(0, 2)
     ]));
     assert.equal(4, result.length);
-    asserts.vectors(gama.Vector(0, -2), result[0]);
-    asserts.vectors(gama.Vector(2, 0), result[1]);
-    asserts.vectors(gama.Vector(0, 2), result[2]);
-    asserts.vectors(gama.Vector(-2, 0), result[3]);
+    asserts.vectors(gama.Vector(2, 0), result[0]);
+    asserts.vectors(gama.Vector(0, 2), result[1]);
+    asserts.vectors(gama.Vector(-2, 0), result[2]);
+    asserts.vectors(gama.Vector(0, -2), result[3]);
   });
 
   it('minVertex', function()

@@ -19,6 +19,15 @@ var sortAsc = R.sort(function(a, b) {
   return a - b;
 });
 
+/**
+ * @param {Array} list
+ * @return {Array} rotated list
+ * @example
+ *
+ * rotateList([0, 1, 2])// -> [1, 2, 0]
+ */
+var rotateList = R.converge(R.append, R.head, R.tail);
+
 //----------------------------------------------
 // factories
 
@@ -556,12 +565,8 @@ gama.boundingBox = function(polygon) {
  */
 gama.axes = R.pipe(
   R.prop('vertices'),
-  R.map.idx(function(vertex, i, vertices) {
-    return gama.normal(gama.Vector(
-      vertices[i],
-      vertices[(i + 1) % vertices.length]
-    ));
-  })
+  R.converge(R.zip, R.identity, rotateList),
+  R.map(R.apply(R.construct(gama.Vector)))
 );
 
 /**
