@@ -578,9 +578,17 @@ gama.axes = R.pipe(
  * @param {Polygon} polygon
  * @return {Point}
  */
-gama.transformPolygon = R.op(function(matrix, polygon) {
-  return gama.Polygon(R.map(gama.transformPoint(matrix))(polygon.vertices));
-});
+gama.transformPolygon = R.op(
+  R.pipe(
+    R.useWith(
+      R.map,
+      gama.transformPoint,
+      R.prop('vertices')
+    ),
+    R.of,
+    R.apply(gama.Polygon)
+  )
+);
 
 /**
  * Checks whether given polygon is concave.
