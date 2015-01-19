@@ -566,7 +566,7 @@ gama.boundingBox = function(polygon) {
 gama.axes = R.pipe(
   R.prop('vertices'),
   R.converge(R.zip, R.identity, rotateList),
-  R.map(R.apply(R.construct(gama.Vector)))
+  R.map(R.apply(gama.Vector))
 );
 
 /**
@@ -600,14 +600,16 @@ gama.transformPolygon = R.op(
  */
 gama.isConcave = R.pipe(
   gama.axes,
-  R.map.idx(function(axis, i, axes) {
-    return gama.dot(axis, axes[(i + 1) % axes.length]);
-  }),
-  R.map.idx(function(result, i, results) {
-    var nextResult = results[(i + 1) % results.length];
-    return result == 0 || nextResult == 0 || (result < 0 && nextResult < 0);
-  }),
-  R.some(R.eq(false))
+  R.converge(
+    R.zip,
+    R.identity,
+    R.pipe(R.identity, rotateList)
+  ),
+  R.map(R.apply(gama.dot)),
+  R.and(
+    R.some(R.gt(0)),
+    R.some(R.lt(0))
+  )
 );
 
 /**
