@@ -411,13 +411,16 @@ gama.negate = function(vector) {
  * gama.scaleVector(2)(gama.Vector(1, 2))// -> gama.Vector(2, 4)
  * gama.scaleVector(gama.Vector(3, 1))(gama.Vector(1, 2))// -> gama.Vector(3, 2)
  */
-gama.scaleVector = R.op(function(by, vector) {
-  if (gama.isVector(by)) {
-    return gama.Vector(vector.x * by.x, vector.y * by.y);
-  }
-
-  return gama.Vector(vector.x * by, vector.y * by);
-});
+gama.scaleVector = R.op(
+  R.useWith(
+    function(a, b) { return gama.Vector(a.x * b.x, a.y * b.y); },
+    R.cond(
+      [gama.isVector, R.identity],
+      [R.alwaysTrue,  function(scalar) { return gama.Vector(scalar, scalar); }]
+    ),
+    R.identity
+  )
+);
 
 //----------------------------------------------
 // matrix
