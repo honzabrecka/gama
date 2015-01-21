@@ -758,7 +758,7 @@ gama.testCircleCircle = R.curry(function(a, b) {
 });
 
 /**
- * Checks whether two polygons overlap.
+ * Checks whether two polygons overlap. Works only for two convex polygons.
  *
  * @func
  * @category Function
