@@ -15,6 +15,10 @@ var R = require('ramda');
  */
 var gama = exports;
 
+/**
+ * @param {Array} List.
+ * @return {Array} Sorted list.
+ */
 var sortAsc = R.sort(function(a, b) {
   return a - b;
 });
@@ -64,14 +68,13 @@ gama.Point = function(x, y) {
  * gama.Vector(gama.Point(1, 2), gama.Point(3, 4))// -> {x: 2, y: 2}
  */
 gama.Vector = R.op(function(x, y) {
-  if (gama.isPoint(x) && gama.isPoint(y)) {
-    return gama.subtract(x, y);
-  }
-
-  return {
+  return R.cond(
+    [R.pipe(R.prop('x'), gama.isPoint), R.pipe(R.props(['x', 'y']), R.apply(gama.subtract))],
+    [R.alwaysTrue, R.identity]
+  )({
     x: x,
     y: y
-  };
+  });
 });
 
 /**
@@ -268,8 +271,30 @@ gama.subtract = R.op(function(a, b) {
   };
 });
 
-//----------------------------------------------
-// point
+/**
+ * Caclulates the length of a vector. This me
+ *
+ * @func
+ * @category Function
+ * @param {Vector}
+ * @return {Number}
+ */
+gama.length2 = function(vector) {
+  return vector.x * vector.x + vector.y * vector.y;
+};
+
+/**
+ * Caclulates the length of a vector.
+ *
+ * @func
+ * @category Function
+ * @param {Vector}
+ * @return {Number}
+ */
+gama.length = R.pipe(
+  gama.length2,
+  Math.sqrt
+);
 
 /**
  * Calculates the distance between two points.
@@ -280,9 +305,12 @@ gama.subtract = R.op(function(a, b) {
  * @param {Point} b
  * @return {Number}
  */
-gama.distance2 = R.op(function(a, b) {
-  return gama.length2(gama.subtract(a, b));
-});
+gama.distance2 = R.op(
+  R.pipe(
+    gama.subtract,
+    gama.length2
+  )
+);
 
 /**
  * Calculates the distance between two points.
@@ -293,9 +321,12 @@ gama.distance2 = R.op(function(a, b) {
  * @param {Point} b
  * @return {Number}
  */
-gama.distance = R.op(function(a, b) {
-  return Math.sqrt(gama.distance2(a, b));
-});
+gama.distance = R.op(
+  R.pipe(
+    gama.distance2,
+    Math.sqrt
+  )
+);
 
 /**
  * Applies transformation matrix on given point.
@@ -310,9 +341,6 @@ gama.transformPoint = R.op(function(matrix, point) {
     matrix[1] * point.x + matrix[4] * point.y + matrix[7]
   );
 });
-
-//----------------------------------------------
-// vectors
 
 /**
  * Generates a normal vector.
@@ -363,30 +391,6 @@ gama.angle = R.op(function(a, b) {
 gama.unit = function(vector) {
   var t = gama.length(vector);
   return gama.Vector(vector.x / t, vector.y / t);
-};
-
-/**
- * Caclulates the length of a vector. This me
- *
- * @func
- * @category Function
- * @param {Vector}
- * @return {Number}
- */
-gama.length2 = function(vector) {
-  return vector.x * vector.x + vector.y * vector.y;
-};
-
-/**
- * Caclulates the length of a vector.
- *
- * @func
- * @category Function
- * @param {Vector}
- * @return {Number}
- */
-gama.length = function(vector) {
-  return Math.sqrt(gama.length2(vector));
 };
 
 /**
@@ -568,7 +572,11 @@ gama.boundingBox = function(polygon) {
  */
 gama.axes = R.pipe(
   R.prop('vertices'),
-  R.converge(R.zip, R.identity, rotateList),
+  R.converge(
+    R.zip,
+    R.identity,
+    rotateList
+  ),
   R.map(R.apply(gama.Vector))
 );
 
@@ -655,9 +663,22 @@ gama.projectionsOverlap = R.op(function(a, b) {
   return R.head(b) <= R.last(a) && R.last(b) >= R.head(a);
 });
 
+/**
+ * @param {Vector} axis
+ * @param {Polygon} polygon
+ * @return {Array} projection
+ */
 var projectPolygonToAxis = R.op(
   R.pipe(
-    R.useWith(R.map, R.converge(R.pipe, gama.projectPointToAxis, gama.dot), R.prop('vertices')), 
+    R.useWith(
+      R.map,
+      R.converge(
+        R.pipe,
+        gama.projectPointToAxis,
+        gama.dot
+      ),
+      R.prop('vertices')
+    ),
     sortAsc
   )
 );
@@ -697,17 +718,31 @@ gama.testPointCircle = R.op(function(point, circle) {
  * @param {Polygon} polygon
  * @return {Boolean}
  */
-gama.testPointPolygon = R.op(function(point, polygon) {
-  return R.pipe(
-    R.map.idx(function(vertex, i, vertices) {
-      var prevVertex = vertices[(vertices.length + i - 1) % vertices.length];
+gama.testPointPolygon = R.op(
+  R.useWith(
+    R.pipe(
+      function(point, vertices) {
+        return R.map(function(v) {
+          var vertex = v[1];
+          var prevVertex = v[0];
 
-      return ((vertex.y > point.y) != (prevVertex.y > point.y)) &&
-        (point.x <= (prevVertex.x - vertex.x) * (point.y - vertex.y) / (prevVertex.y - vertex.y) + vertex.x);
-    }),
-    R.reduce(function(a, b) { return b ? !a : a; }, false)
-  )(polygon.vertices);
-});
+          return ((vertex.y > point.y) != (prevVertex.y > point.y)) &&
+            (point.x <= (prevVertex.x - vertex.x) * (point.y - vertex.y) / (prevVertex.y - vertex.y) + vertex.x);
+        })(vertices);
+      },
+      R.reduce(function(a, b) { return b ? !a : a; }, false)
+    ),
+    R.identity,
+    R.pipe(
+      R.prop('vertices'),
+      R.converge(
+        R.zip,
+        R.identity,
+        R.pipe(R.identity, rotateList)
+      )
+    )
+  )
+);
 
 /**
  * Checks whether two circles overlap.
@@ -735,7 +770,7 @@ gama.testPolygonPolygon = R.curry(function(a, b) {
   var axes = R.union(gama.axes(a), gama.axes(b));
 
   return !R.some(function(axis) {
-    var project = projectPolygonToAxis(axis);
+    var project = projectPolygonToAxis(gama.negate(axis));
 
     return !gama.projectionsOverlap(
       project(a),
