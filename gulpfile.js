@@ -49,7 +49,7 @@ gulp.task('dist', function() {
     .require('./src/gama', {expose: 'gama'})
     .require('ramda', {expose: 'ramda'})
     .bundle()
-    .pipe(source('gama.bundle.js'))
+    .pipe(source('gama.min.js'))
     .pipe(buffer())
     .pipe(uglify())
     .pipe(header(banner, {pkg: pkg}))
