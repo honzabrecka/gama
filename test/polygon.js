@@ -171,4 +171,16 @@ describe('Polygon', function()
     assert.equal(true, gama.isConcave(polygon));
     assert.equal(false, gama.isConvex(polygon));
   });
+
+  it('rectangle2polygon', function()
+  {
+    var rectangle = gama.Rectangle(0, 0, 4, 2);
+    var polygon = gama.Polygon([
+      gama.Point(0, 0),
+      gama.Point(4, 0),
+      gama.Point(4, 2),
+      gama.Point(0, 2)
+    ]);
+    asserts.polygons(polygon, gama.rectangle2polygon(rectangle));
+  });
 });

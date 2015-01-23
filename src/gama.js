@@ -633,6 +633,23 @@ gama.isConcave = R.pipe(
  */
 gama.isConvex = R.not(gama.isConcave);
 
+/**
+ * Creates polygon from given rectangle.
+ * 
+ * @func
+ * @category Function
+ * @param {Rectangle}
+ * @return {Polygon}
+ */ 
+gama.rectangle2polygon = function(rectangle) {
+  return gama.Polygon([
+    gama.Point(rectangle.x, rectangle.y),
+    gama.Point(rectangle.x + rectangle.width, rectangle.y),
+    gama.Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height),
+    gama.Point(rectangle.x, rectangle.y + rectangle.height)
+  ]);
+};
+
 //----------------------------------------------
 // collision detections
 
