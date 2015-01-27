@@ -16,7 +16,7 @@ var R = require('ramda');
 var gama = exports;
 
 /**
- * @param {Array} List.
+ * @param {Array} List.
  * @return {Array} Sorted list.
  */
 var sortAsc = R.sort(function(a, b) {
@@ -277,7 +277,7 @@ gama.subtract = R.op(function(a, b) {
  * @func
  * @category Function
  * @param {Vector}
- * @return {Number}
+ * @return {Number}
  */
 gama.length2 = function(vector) {
   return vector.x * vector.x + vector.y * vector.y;
@@ -289,7 +289,7 @@ gama.length2 = function(vector) {
  * @func
  * @category Function
  * @param {Vector}
- * @return {Number}
+ * @return {Number}
  */
 gama.length = R.pipe(
   gama.length2,
@@ -417,7 +417,7 @@ gama.negate = function(vector) {
  */
 gama.scaleVector = R.op(
   R.useWith(
-    function(a, b) { return gama.Vector(a.x * b.x, a.y * b.y); },
+    function(a, b) { return gama.Vector(a.x * b.x, a.y * b.y); },
     R.cond(
       [gama.isVector, R.identity],
       [R.alwaysTrue,  function(scalar) { return gama.Vector(scalar, scalar); }]
@@ -682,7 +682,7 @@ gama.projectionsOverlap = R.op(function(a, b) {
 
 /**
  * @param {Vector} axis
- * @param {Polygon} polygon
+ * @param {Polygon} polygon
  * @return {Array} projection
  */
 var projectPolygonToAxis = R.op(
