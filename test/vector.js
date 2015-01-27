@@ -16,14 +16,6 @@ describe('Vector', function()
     assert.deepEqual({x: 1, y: 2}, gama.Vector(1, 2));
   });
 
-  it('factory from two points', function()
-  {
-    assert.deepEqual({x: 2, y: 2}, gama.Vector(
-      gama.Point(1, 2),
-      gama.Point(3, 4)
-    ));
-  });
-
   it('isVector', function()
   {
     assert.equal(true, gama.isVector({x: 1, y: 2}));

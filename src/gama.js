@@ -59,23 +59,14 @@ gama.Point = function(x, y) {
  *
  * @func
  * @category Function
- * @param {Number|Point} x
- * @param {Number|Point} y
+ * @param {Number|} x
+ * @param {Number} y
  * @return {Vector}
  * @example
  * 
  * gama.Vector(1, 2)// -> {x: 1, y: 2}
- * gama.Vector(gama.Point(1, 2), gama.Point(3, 4))// -> {x: 2, y: 2}
  */
-gama.Vector = R.op(function(x, y) {
-  return R.cond(
-    [R.pipe(R.prop('x'), gama.isPoint), R.pipe(R.props(['x', 'y']), R.apply(gama.subtract))],
-    [R.alwaysTrue, R.identity]
-  )({
-    x: x,
-    y: y
-  });
-});
+gama.Vector = gama.Point;
 
 /**
  * Creates an object representing rectangle.
@@ -577,7 +568,7 @@ gama.axes = R.pipe(
     R.identity,
     rotateList
   ),
-  R.map(R.apply(gama.Vector))
+  R.map(R.apply(gama.subtract))
 );
 
 /**
