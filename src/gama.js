@@ -172,6 +172,7 @@ var PI2 = 2 * Math.PI;
  *
  * @func
  * @category Function
+ * @sig Number -> Number
  * @param {Number}
  * @return {Number}
  */
@@ -184,6 +185,7 @@ gama.deg2rad = function(rotation) {
  *
  * @func
  * @category Function
+ * @sig Number -> Number
  * @param {Number}
  * @return {Number}
  */
@@ -199,6 +201,7 @@ gama.rad2deg = function(rotation) {
  *
  * @func
  * @category Function
+ * @sig * -> Boolean
  * @param {Object}
  * @return {Boolean}
  * @example
@@ -215,6 +218,7 @@ gama.isPoint = R.and(R.has('x'), R.has('y'));
  *
  * @func
  * @category Function
+ * @sig * -> Boolean
  * @param {Object}
  * @return {Boolean}
  * @example
@@ -233,6 +237,7 @@ gama.isVector = gama.isPoint;
  * 
  * @func
  * @category Function
+ * @sig Point|Vector -> Point|Vector -> Point|Vector
  * @param {Point|Vector} a
  * @param {Point|Vector} b
  * @return {Point|Vector}
@@ -251,6 +256,7 @@ gama.add = R.op(function(a, b) {
  * 
  * @func
  * @category Function
+ * @sig Point|Vector -> Point|Vector -> Point|Vector
  * @param {Point|Vector} a
  * @param {Point|Vector} b
  * @return {Point|Vector}
@@ -267,6 +273,7 @@ gama.subtract = R.op(function(a, b) {
  *
  * @func
  * @category Function
+ * @sig Vector -> Number
  * @param {Vector}
  * @return {Number}
  */
@@ -279,6 +286,7 @@ gama.length2 = function(vector) {
  *
  * @func
  * @category Function
+ * @sig Vector -> Number
  * @param {Vector}
  * @return {Number}
  */
@@ -292,6 +300,7 @@ gama.length = R.pipe(
  *
  * @func
  * @category Function
+ * @sig Point -> Point -> Number
  * @param {Point} a
  * @param {Point} b
  * @return {Number}
@@ -308,6 +317,7 @@ gama.distance2 = R.op(
  *
  * @func
  * @category Function
+ * @sig Point -> Point -> Number
  * @param {Point} a
  * @param {Point} b
  * @return {Number}
@@ -322,6 +332,9 @@ gama.distance = R.op(
 /**
  * Applies transformation matrix on given point.
  *
+ * @func
+ * @category Function
+ * @sig Matrix -> Point -> Point
  * @param {Matrix} matrix
  * @param {Point} point
  * @return {Point}
@@ -338,6 +351,7 @@ gama.transformPoint = R.op(function(matrix, point) {
  *
  * @func
  * @category Function
+ * @sig Vector -> Vector
  * @param {Vector}
  * @return {Vector}
  */
@@ -350,6 +364,7 @@ gama.normal = function(vector) {
  *
  * @func
  * @category Function
+ * @sig Vector -> Vector -> Number
  * @param {Vector} a
  * @param {Vector} b
  * @return {Number}
@@ -363,6 +378,7 @@ gama.dot = R.curry(function(a, b) {
  *
  * @func
  * @category Function
+ * @sig Vector -> Vector -> Number
  * @param {Vector} a
  * @param {Vector} b
  * @return {Number} cos
@@ -376,6 +392,7 @@ gama.angle = R.op(function(a, b) {
  *
  * @func
  * @category Function
+ * @sig Vector -> Vector
  * @param {Vector} vector
  * @return {Vector}
  */
@@ -387,6 +404,9 @@ gama.unit = function(vector) {
 /**
  * Negates the components of a vector.
  *
+ * @func
+ * @category Function
+ * @sig Vector -> Vector
  * @param {Vector} vector
  * @return {Vector}
  */
@@ -399,6 +419,7 @@ gama.negate = function(vector) {
  *
  * @func
  * @category Function
+ * @sig Number|Vector -> Vector -> Vector
  * @param {Number|Vector}
  * @return {Vector}
  * @example
@@ -423,8 +444,11 @@ gama.scaleVector = R.op(
 /**
  * Multiplies two matrices.
  *
- * @param {Vector} vector
- * @param {Matrix} matrix
+ * @func
+ * @category Function
+ * @sig Matrix -> Matrix -> Matrix
+ * @param {Matrix} a
+ * @param {Matrix} b
  * @return {Matrix}
  */
 gama.multiply = R.op(function(a, b) {
@@ -444,6 +468,9 @@ gama.multiply = R.op(function(a, b) {
 /**
  * Translates the matrix.
  *
+ * @func
+ * @category Function
+ * @sig Vector -> Matrix -> Matrix
  * @param {Vector} vector
  * @param {Matrix} matrix
  * @return {Matrix}
@@ -456,6 +483,9 @@ gama.translate = R.op(function(vector, matrix) {
 /**
  * Applies a scaling transformation to the matrix.
  *
+ * @func
+ * @category Function
+ * @sig Vector -> Matrix -> Matrix
  * @param {Vector} vector
  * @param {Matrix} matrix
  * @return {Matrix}
@@ -468,6 +498,9 @@ gama.scale = R.curry(function(vector, matrix) {
 /**
  * Applies a rotation transformation to the matrix.
  *
+ * @func
+ * @category Function
+ * @sig Number -> Matrix -> Matrix
  * @param {Number} angle
  * @param {Matrix} matrix
  * @return {Matrix}
@@ -482,6 +515,9 @@ gama.rotate = R.op(function(angle, matrix) {
 /**
  * Applies a rotation transformation to the matrix.
  *
+ * @func
+ * @category Function
+ * @sig Number -> Point -> Matrix -> Matrix
  * @param {Number} angle
  * @param {Point} point
  * @param {Matrix} matrix
@@ -508,6 +544,7 @@ var maxY = R.pipe(R.map(R.prop('y')), R.max);
  *
  * @func
  * @category Function
+ * @sig Polygon -> Point
  * @param {Polygon}
  * @return {Point}
  */
@@ -523,6 +560,7 @@ gama.minVertex = function(polygon) {
  *
  * @func
  * @category Function
+ * @sig Polygon -> Point
  * @param {Polygon}
  * @return {Point}
  */
@@ -538,6 +576,7 @@ gama.maxVertex = function(polygon) {
  *
  * @func
  * @category Function
+ * @sig Polygon -> Rectangle
  * @param {Polygon}
  * @return {Rectangle}
  */
@@ -558,6 +597,7 @@ gama.boundingBox = function(polygon) {
  *
  * @func
  * @category Function
+ * @sig Polygon -> [Vector]
  * @param {Polygon}
  * @return {Array} List of vectors.
  */
@@ -576,6 +616,7 @@ gama.axes = R.pipe(
  *
  * @func
  * @category Function
+ * @sig Matrix -> Polygon -> Point
  * @param {Matrix} matrix
  * @param {Polygon} polygon
  * @return {Point}
@@ -597,6 +638,7 @@ gama.transformPolygon = R.op(
  *
  * @func
  * @category Function
+ * @sig Polygon -> Boolean
  * @param {Polygon}
  * @return {Boolean}
  */
@@ -619,6 +661,7 @@ gama.isConcave = R.pipe(
  *
  * @func
  * @category Function
+ * @sig Polygon -> Boolean
  * @param {Polygon}
  * @return {Boolean}
  */
@@ -629,6 +672,7 @@ gama.isConvex = R.not(gama.isConcave);
  * 
  * @func
  * @category Function
+ * @sig Rectangle -> Rectangle
  * @param {Rectangle}
  * @return {Polygon}
  */ 
@@ -649,6 +693,7 @@ gama.rectangle2polygon = function(rectangle) {
  *
  * @func
  * @category Function
+ * @sig Vector -> Point -> Point
  * @param {Vector} axis
  * @param {Point} vertex
  * @return {Point}
@@ -663,6 +708,7 @@ gama.projectPointToAxis = R.op(function(axis, vertex) {
  *
  * @func
  * @category Function
+ * @sig [a] -> [b] -> Boolean
  * @param {Array} a
  * @param {Array} b
  * @return {Boolean}
@@ -696,6 +742,7 @@ var projectPolygonToAxis = R.op(
  *
  * @func
  * @category Function
+ * @sig Point -> Rectangle -> Boolean
  * @param {Point} point
  * @param {Rectangle} rectangle
  * @return {Boolean}
@@ -709,6 +756,7 @@ gama.testPointRectangle = R.op(function(point, rectangle) {
  *
  * @func
  * @category Function
+ * @sig Point -> Circle -> Boolean
  * @param {Point} point
  * @param {Circle} circle
  * @return {Boolean}
@@ -722,6 +770,7 @@ gama.testPointCircle = R.op(function(point, circle) {
  *
  * @func
  * @category Function
+ * @sig Point -> Polygon -> Boolean
  * @param {Point} point
  * @param {Polygon} polygon
  * @return {Boolean}
@@ -757,6 +806,7 @@ gama.testPointPolygon = R.op(
  *
  * @func
  * @category Function
+ * @sig Circle -> Circle -> Boolean
  * @param {Circle} a
  * @param {Circle} b
  * @return {Boolean}
@@ -770,6 +820,7 @@ gama.testCircleCircle = R.curry(function(a, b) {
  *
  * @func
  * @category Function
+ * @sig Polygon -> Polygon -> Boolean
  * @param {Polygon} a
  * @param {Polygon} b
  * @return {Boolean}
