@@ -32,6 +32,19 @@ var sortAsc = R.sort(function(a, b) {
  */
 var rotateList = R.converge(R.append, R.head, R.tail);
 
+/**
+ * @param {Array} List
+ * @return {Array}
+ * @example
+ *
+ * rotateToPairs([0, 1, 2]) -> [[0, 1], [1, 2], [2, 0]]
+ */
+var rotateToPairs = R.converge(
+  R.zip,
+  R.identity,
+  rotateList
+);
+
 //----------------------------------------------
 // factories
 
@@ -603,11 +616,7 @@ gama.boundingBox = function(polygon) {
  */
 gama.axes = R.pipe(
   R.prop('vertices'),
-  R.converge(
-    R.zip,
-    R.identity,
-    rotateList
-  ),
+  rotateToPairs,
   R.map(R.apply(gama.subtract))
 );
 
@@ -644,11 +653,7 @@ gama.transformPolygon = R.op(
  */
 gama.isConcave = R.pipe(
   gama.axes,
-  R.converge(
-    R.zip,
-    R.identity,
-    R.pipe(R.identity, rotateList)
-  ),
+  rotateToPairs,
   R.map(R.apply(gama.dot)),
   R.and(
     R.some(R.gt(0)),
@@ -792,11 +797,7 @@ gama.testPointPolygon = R.op(
     R.identity,
     R.pipe(
       R.prop('vertices'),
-      R.converge(
-        R.zip,
-        R.identity,
-        R.pipe(R.identity, rotateList)
-      )
+      rotateToPairs
     )
   )
 );
