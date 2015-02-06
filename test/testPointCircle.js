@@ -7,13 +7,14 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
+var R = require('ramda');
 var gama = require('../src/gama');
 
 describe('collision test: Point and Circle', function()
 {
   it('point lays in circle', function()
   {
-    var pointLaysInCircle = gama.testPointCircle(undefined, gama.Circle(
+    var pointLaysInCircle = gama.testPointCircle(R.__, gama.Circle(
       gama.Point(3, 4),
       2
     ));

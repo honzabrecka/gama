@@ -445,7 +445,7 @@ gama.scaleVector = R.op(
     function(a, b) { return gama.Vector(a.x * b.x, a.y * b.y); },
     R.cond(
       [gama.isVector, R.identity],
-      [R.alwaysTrue,  function(scalar) { return gama.Vector(scalar, scalar); }]
+      [R.T,           function(scalar) { return gama.Vector(scalar, scalar); }]
     ),
     R.identity
   )
@@ -656,8 +656,8 @@ gama.isConcave = R.pipe(
   rotateToPairs,
   R.map(R.apply(gama.dot)),
   R.and(
-    R.some(R.gt(0)),
-    R.some(R.lt(0))
+    R.any(R.gt(0)),
+    R.any(R.lt(0))
   )
 );
 
@@ -792,7 +792,7 @@ gama.testPointPolygon = R.op(
             (point.x <= (prevVertex.x - vertex.x) * (point.y - vertex.y) / (prevVertex.y - vertex.y) + vertex.x);
         })(vertices);
       },
-      R.reduce(function(a, b) { return b ? !a : a; }, false)
+      R.foldl(function(a, b) { return b ? !a : a; }, false)
     ),
     R.identity,
     R.pipe(
@@ -829,7 +829,7 @@ gama.testCircleCircle = R.curry(function(a, b) {
 gama.testPolygonPolygon = R.curry(function(a, b) {
   var axes = R.union(gama.axes(a), gama.axes(b));
 
-  return !R.some(function(axis) {
+  return !R.any(function(axis) {
     var project = projectPolygonToAxis(gama.negate(axis));
 
     return !gama.projectionsOverlap(

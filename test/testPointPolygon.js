@@ -7,13 +7,14 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
+var R = require('ramda');
 var gama = require('../src/gama');
 
 describe('collision test: Point and Polygon', function()
 {
   it('point lies inside rectangle', function()
   {
-    var pointLiesInRectangle = gama.testPointPolygon(undefined, gama.Polygon([
+    var pointLiesInRectangle = gama.testPointPolygon(R.__, gama.Polygon([
       gama.Point(0, 0),
       gama.Point(2, 0),
       gama.Point(2, 2),
@@ -27,7 +28,7 @@ describe('collision test: Point and Polygon', function()
 
   it('point lies inside triangle', function()
   {
-    var pointLiesInTriangle = gama.testPointPolygon(undefined, gama.Polygon([
+    var pointLiesInTriangle = gama.testPointPolygon(R.__, gama.Polygon([
       gama.Point(0, 1),
       gama.Point(1, 3),
       gama.Point(2, 2)

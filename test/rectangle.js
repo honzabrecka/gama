@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------
 
 var assert = require('assert');
+var R = require('ramda');
 var gama = require('../src/gama');
 
 describe('Rectangle', function()
@@ -16,7 +17,7 @@ describe('Rectangle', function()
     assert.deepEqual({x: 1, y: 2, width: 3, height: 4}, gama.Rectangle(1, 2, 3, 4));
   });
 
-  var pointInRectangle = gama.testPointRectangle(undefined, gama.Rectangle(10, 20, 30, 40));
+  var pointInRectangle = gama.testPointRectangle(R.__, gama.Rectangle(10, 20, 30, 40));
 
   it('testPointRectangle (in)', function()
   {
