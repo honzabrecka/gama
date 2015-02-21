@@ -1,6 +1,6 @@
 {
   "name": "gama",
-  "version": "0.2.3",
+  "version": "0.3.1",
   "description": "A practical math/geometry library for functional JavaScript, based on ramda.",
   "keywords": [
     "gama",
