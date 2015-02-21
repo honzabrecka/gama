@@ -18,7 +18,7 @@
   },
   "main": "src/gama.js",
   "dependencies": {
-    "ramda": "0.9.*"
+    "ramda": "0.10.*"
   },
   "devDependencies": {
     "gulp": "3.8.*",

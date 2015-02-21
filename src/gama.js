@@ -792,7 +792,7 @@ gama.testPointPolygon = R.op(
             (point.x <= (prevVertex.x - vertex.x) * (point.y - vertex.y) / (prevVertex.y - vertex.y) + vertex.x);
         })(vertices);
       },
-      R.foldl(function(a, b) { return b ? !a : a; }, false)
+      R.reduce(function(a, b) { return b ? !a : a; }, false)
     ),
     R.identity,
     R.pipe(
