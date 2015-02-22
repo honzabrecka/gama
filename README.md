@@ -31,7 +31,7 @@ var R = require('ramda');
 
 ## Documentation
 
-Please review the [API documentation](https://honzabrecka.github.io/gama).
+Please review the [API documentation](http://honzabrecka.com/gama).
 
 ## Building
 
