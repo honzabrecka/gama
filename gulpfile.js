@@ -46,7 +46,7 @@ gulp.task('linter', function()
 
 gulp.task('dist', function() {
   browserify('./src/gama.js')
-    .require('./src/gama', {expose: 'gama'})
+    .require('./src/gama.js', {expose: 'gama'})
     .require('ramda', {expose: 'ramda'})
     .bundle()
     .pipe(source('gama.min.js'))
