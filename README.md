@@ -1,16 +1,13 @@
-# Γ [![Build Status](https://travis-ci.org/honzabrecka/gama.svg?branch=master)](https://travis-ci.org/honzabrecka/gama) [![Dependency Status](https://david-dm.org/honzabrecka/gama.svg)](https://david-dm.org/honzabrecka/gama)
+# Γ [![Build Status](https://travis-ci.org/honzabrecka/gama.svg?branch=master)](https://travis-ci.org/honzabrecka/gama)
 
-A practical math/geometry library for functional JavaScript, based on [Ramda](http://ramdajs.com/).
+A practical 2D math/geometry library for functional JavaScript, based on [Ramda](http://ramdajs.com/).
 
-## Why gama?
+## Why Gama?
 
-Gama is based on Ramda and follows its philosophy:
-
-The primary features of Gama (Ramda) are:
+Gama is based on Ramda and follows its philosophy. The primary features of Gama are:
 
 - Immutability and side-effect free functions are at the heart of its design philosophy. This can help you get the job done with simple, elegant code.
 - Functions are automatically curried. This allows you to easily build up new functions from old ones simply by not supplying the final parameters.
-- The parameters to functions are arranged to make it convenient for currying. The data to be operated on is generally supplied last.
 
 ## Installation
 
@@ -26,7 +23,6 @@ To use directly in the browser:
 
 ```js
 var gama = require('gama');
-var R = require('ramda');
 ```
 
 ## Documentation
