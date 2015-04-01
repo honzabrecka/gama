@@ -65,7 +65,7 @@ var projectPolygonToAxis = R.curryN(2, function(axis, polygon) {
  * Creates an object representing point.
  *
  * @func
- * @category Function
+ * @category factory
  * @param {Number} x
  * @param {Number} y
  * @return {Point}
@@ -84,8 +84,8 @@ gama.Point = function(x, y) {
  * Creates an object representing vector.
  *
  * @func
- * @category Function
- * @param {Number|} x
+ * @category factory
+ * @param {Number} x
  * @param {Number} y
  * @return {Vector}
  * @example
@@ -100,7 +100,7 @@ gama.Vector = function(x, y) {
  * Creates an object representing rectangle.
  *
  * @func
- * @category Function
+ * @category factory
  * @param {Number} x
  * @param {Number} y
  * @param {Number} width
@@ -123,7 +123,7 @@ gama.Rectangle = function(x, y, width, height) {
  * Creates an object representing polygon.
  *
  * @func
- * @category Function
+ * @category factory
  * @param {Array} vertices List of vertices.
  * @return {Polygon}
  * @example
@@ -141,7 +141,7 @@ gama.Polygon = function(vertices) {
  * Creates an object representing circle.
  *
  * @func
- * @category Function
+ * @category factory
  * @param {Point} position
  * @param {Number} radius
  * @return {Circle}
@@ -160,7 +160,7 @@ gama.Circle = function(position, radius) {
  * Creates a list representing 3x3 matrix.
  *
  * @func
- * @category Function
+ * @category factory
  * @param {Number} a
  * @param {Number} b
  * @param {Number} c
@@ -180,7 +180,7 @@ gama.Matrix = function(a, b, c, d, tx, ty) {
  * Creates a list representing empty 3x3 matrix.
  *
  * @func
- * @category Function
+ * @category factory
  * @return {Matrix}
  * @example
  * 
@@ -199,7 +199,7 @@ var PI2 = 2 * Math.PI;
  * Converts degrees to radians.
  *
  * @func
- * @category Function
+ * @category conversion
  * @sig Number -> Number
  * @param {Number}
  * @return {Number}
@@ -212,7 +212,7 @@ gama.deg2rad = function(rotation) {
  * Converts radians to degrees.
  *
  * @func
- * @category Function
+ * @category conversion
  * @sig Number -> Number
  * @param {Number}
  * @return {Number}
@@ -228,7 +228,7 @@ gama.rad2deg = function(rotation) {
  * Checks whether given value is point (contains x and y properties).
  *
  * @func
- * @category Function
+ * @category point
  * @sig * -> Boolean
  * @param {Object}
  * @return {Boolean}
@@ -247,7 +247,7 @@ gama.isPoint = function(input) {
  * Checks whether given value is vector (contains x and y properties).
  *
  * @func
- * @category Function
+ * @category vector
  * @sig * -> Boolean
  * @param {Object}
  * @return {Boolean}
@@ -266,7 +266,7 @@ gama.isVector = gama.isPoint;
  * to create a new point.
  * 
  * @func
- * @category Function
+ * @category vector
  * @sig Point|Vector -> Point|Vector -> Point|Vector
  * @param {Point|Vector} a
  * @param {Point|Vector} b
@@ -282,7 +282,7 @@ gama.add = R.curryN(2, function(a, b) {
  * to create a new point.
  * 
  * @func
- * @category Function
+ * @category vector
  * @sig Point|Vector -> Point|Vector -> Point|Vector
  * @param {Point|Vector} a
  * @param {Point|Vector} b
@@ -293,10 +293,10 @@ gama.subtract = R.curryN(2, function(a, b) {
 });
 
 /**
- * Caclulates the length of a vector. This me
+ * Caclulates the length of a vector.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Vector -> Number
  * @param {Vector}
  * @return {Number}
@@ -309,7 +309,7 @@ gama.length2 = function(vector) {
  * Caclulates the length of a vector.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Vector -> Number
  * @param {Vector}
  * @return {Number}
@@ -322,7 +322,7 @@ gama.length = function(vector) {
  * Calculates the distance between two points.
  *
  * @func
- * @category Function
+ * @category point
  * @sig Point -> Point -> Number
  * @param {Point} a
  * @param {Point} b
@@ -336,7 +336,7 @@ gama.distance2 = R.curryN(2, function(a, b) {
  * Calculates the distance between two points.
  *
  * @func
- * @category Function
+ * @category point
  * @sig Point -> Point -> Number
  * @param {Point} a
  * @param {Point} b
@@ -350,7 +350,7 @@ gama.distance = R.curryN(2, function(a, b) {
  * Generates a normal vector.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Vector -> Vector
  * @param {Vector}
  * @return {Vector}
@@ -363,7 +363,7 @@ gama.normal = function(vector) {
  * Caclulates the dot product of two vectors.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Vector -> Vector -> Number
  * @param {Vector} a
  * @param {Vector} b
@@ -377,7 +377,7 @@ gama.dot = R.curryN(2, function(a, b) {
  * Caclulates angle between two vectors.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Vector -> Vector -> Number
  * @param {Vector} a
  * @param {Vector} b
@@ -391,7 +391,7 @@ gama.angle = R.curryN(2, function(a, b) {
  * Generates a unit vector.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Vector -> Vector
  * @param {Vector} vector
  * @return {Vector}
@@ -405,7 +405,7 @@ gama.unit = function(vector) {
  * Negates the components of a vector.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Vector -> Vector
  * @param {Vector} vector
  * @return {Vector}
@@ -418,9 +418,9 @@ gama.negate = function(vector) {
  * Multiplies the components of a vector by a scalar value or another vector.
  *
  * @func
- * @category Function
+ * @category vector
  * @sig Number|Vector -> Vector -> Vector
- * @param {Number|Vector}
+ * @param {Object} Number or Vector
  * @return {Vector}
  * @example
  *
@@ -435,7 +435,7 @@ gama.scaleVector = R.curryN(2, function(a, b) {
  * Applies transformation matrix on given point.
  *
  * @func
- * @category Function
+ * @category matrix
  * @sig Matrix -> Point -> Point
  * @param {Matrix} matrix
  * @param {Point} point
@@ -455,7 +455,7 @@ gama.transformPoint = R.curryN(2, function(matrix, point) {
  * Multiplies two matrices.
  *
  * @func
- * @category Function
+ * @category matrix
  * @sig Matrix -> Matrix -> Matrix
  * @param {Matrix} a
  * @param {Matrix} b
@@ -479,7 +479,7 @@ gama.multiplyMatrix = R.curryN(2, function(a, b) {
  * Translates the matrix.
  *
  * @func
- * @category Function
+ * @category matrix
  * @sig Vector -> Matrix -> Matrix
  * @param {Vector} vector
  * @param {Matrix} matrix
@@ -494,7 +494,7 @@ gama.translateMatrix = R.curryN(2, function(vector, matrix) {
  * Applies a scaling transformation to the matrix.
  *
  * @func
- * @category Function
+ * @category matrix
  * @sig Vector -> Matrix -> Matrix
  * @param {Vector} vector
  * @param {Matrix} matrix
@@ -509,7 +509,7 @@ gama.scaleMatrix = R.curryN(2, function(vector, matrix) {
  * Applies a rotation transformation to the matrix.
  *
  * @func
- * @category Function
+ * @category matrix
  * @sig Number -> Matrix -> Matrix
  * @param {Number} angle
  * @param {Matrix} matrix
@@ -526,7 +526,7 @@ gama.rotateMatrix = R.curryN(2, function(angle, matrix) {
  * Applies a rotation transformation to the matrix.
  *
  * @func
- * @category Function
+ * @category matrix
  * @sig Number -> Point -> Matrix -> Matrix
  * @param {Number} angle
  * @param {Point} point
@@ -553,7 +553,7 @@ var maxY = R.compose(R.max, R.map(R.prop('y')));
  * Returns the top left vertex of polygon's bounding box.
  *
  * @func
- * @category Function
+ * @category polygon
  * @sig Polygon -> Point
  * @param {Polygon}
  * @return {Point}
@@ -569,7 +569,7 @@ gama.minVertex = function(polygon) {
  * Returns the bottom right vertex of polygon's bounding box.
  *
  * @func
- * @category Function
+ * @category polygon
  * @sig Polygon -> Point
  * @param {Polygon}
  * @return {Point}
@@ -585,7 +585,7 @@ gama.maxVertex = function(polygon) {
  * Returns bounding box.
  *
  * @func
- * @category Function
+ * @category polygon
  * @sig Polygon -> Rectangle
  * @param {Polygon}
  * @return {Rectangle}
@@ -606,7 +606,7 @@ gama.boundingBox = function(polygon) {
  * Generates axes. It returns as many axes as a polygon has vertices.
  *
  * @func
- * @category Function
+ * @category polygon
  * @sig Polygon -> [Vector]
  * @param {Polygon}
  * @return {Array} List of vectors.
@@ -620,7 +620,7 @@ gama.axes = R.compose(
  * Applies transformation matrix on given polygon.
  *
  * @func
- * @category Function
+ * @category matrix
  * @sig Matrix -> Polygon -> Point
  * @param {Matrix} matrix
  * @param {Polygon} polygon
@@ -637,7 +637,7 @@ gama.transformPolygon = R.curryN(2, function(matrix, polygon) {
  * Checks whether given polygon is concave.
  *
  * @func
- * @category Function
+ * @category polygon
  * @sig Polygon -> Boolean
  * @param {Polygon}
  * @return {Boolean}
@@ -652,7 +652,7 @@ gama.isConcave = R.compose(
  * Checks whether given polygon is convex.
  *
  * @func
- * @category Function
+ * @category polygon
  * @sig Polygon -> Boolean
  * @param {Polygon}
  * @return {Boolean}
@@ -665,7 +665,7 @@ gama.isConvex = function(polygon) {
  * Creates polygon from given rectangle.
  * 
  * @func
- * @category Function
+ * @category polygon
  * @sig Rectangle -> Rectangle
  * @param {Rectangle}
  * @return {Polygon}
@@ -686,7 +686,7 @@ gama.rectangle2polygon = function(rectangle) {
  * Projects vertex to axis.
  *
  * @func
- * @category Function
+ * @category test
  * @sig Vector -> Point -> Point
  * @param {Vector} axis
  * @param {Point} vertex
@@ -701,7 +701,7 @@ gama.projectPointToAxis = R.curryN(2, function(axis, vertex) {
  * Checks whether two projections overlap.
  *
  * @func
- * @category Function
+ * @category test
  * @sig [a] -> [b] -> Boolean
  * @param {Array} a
  * @param {Array} b
@@ -715,7 +715,7 @@ gama.projectionsOverlap = R.curryN(2, function(a, b) {
  * Checks whether point lies inside rectangle.
  *
  * @func
- * @category Function
+ * @category test
  * @sig Point -> Rectangle -> Boolean
  * @param {Point} point
  * @param {Rectangle} rectangle
@@ -729,7 +729,7 @@ gama.testPointRectangle = R.curryN(2, function(point, rectangle) {
  * Checks whether point lies inside circle.
  *
  * @func
- * @category Function
+ * @category test
  * @sig Point -> Circle -> Boolean
  * @param {Point} point
  * @param {Circle} circle
@@ -743,7 +743,7 @@ gama.testPointCircle = R.curryN(2, function(point, circle) {
  * Checks whether point lies inside polygon.
  *
  * @func
- * @category Function
+ * @category test
  * @sig Point -> Polygon -> Boolean
  * @param {Point} point
  * @param {Polygon} polygon
@@ -765,7 +765,7 @@ gama.testPointPolygon = R.curryN(2, function(point, polygon) {
  * Checks whether two circles overlap.
  *
  * @func
- * @category Function
+ * @category test
  * @sig Circle -> Circle -> Boolean
  * @param {Circle} a
  * @param {Circle} b
@@ -779,7 +779,7 @@ gama.testCircleCircle = R.curryN(2, function(a, b) {
  * Checks whether two polygons overlap. Works only for two convex polygons.
  *
  * @func
- * @category Function
+ * @category test
  * @sig Polygon -> Polygon -> Boolean
  * @param {Polygon} a
  * @param {Polygon} b

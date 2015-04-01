@@ -4,3 +4,6 @@
 /test/
 /.travis.yml
 /.npmignore
+/bower_components
+/docs
+/lib
