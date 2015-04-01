@@ -100,7 +100,7 @@ describe('Polygon', function()
       rectangle.vertices[2]
     ));
     var rotatePolygon = function(point, angle, polygon) {
-      var matrix = gama.rotateAboutPoint(angle, point, gama.EmptyMatrix());
+      var matrix = gama.rotateAround(angle, point, gama.EmptyMatrix());
       return gama.transformPolygon(matrix, polygon);
     };
 

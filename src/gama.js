@@ -15,35 +15,48 @@ var R = require('ramda');
  */
 var gama = exports;
 
-/**
- * @param {Array} List.
- * @return {Array} Sorted list.
- */
-var sortAsc = R.sort(function(a, b) {
+//----------------------------------------------
+// internals
+
+var asc = function(a, b) {
   return a - b;
+};
+
+var axesFromVertices = function(vertex, i, vertices) {
+  return gama.subtract(// same as gama.Vector, but without any condition
+    vertex,
+    vertices[(i + 1) % vertices.length]    
+  );
+};
+
+var dotsFromAxes = function(axis, i, axes) {
+  return gama.dot(
+    axis,
+    axes[(i + 1) % axes.length]    
+  );
+};
+
+var dotsConcave = function(dots) {
+  return R.any(R.lt(0), dots) && R.any(R.gt(0), dots);
+};
+
+var reduceTestPointPolygonResult = function(a, b) {
+  return b ? !a : a;
+};
+
+/**
+ * @param {Vector} axis
+ * @param {Polygon} polygon
+ * @return {Array} projection
+ */
+var projectPolygonToAxis = R.curryN(2, function(axis, polygon) {
+  return R.compose(
+    R.sort(asc),
+    R.map(function(vertex) {
+      return gama.dot(axis, gama.projectPointToAxis(axis, vertex));
+    })
+  )(polygon.vertices);
 });
-
-/**
- * @param {Array} list
- * @return {Array} rotated list
- * @example
- *
- * rotateList([0, 1, 2])// -> [1, 2, 0]
- */
-var rotateList = R.converge(R.append, R.head, R.tail);
-
-/**
- * @param {Array} List
- * @return {Array}
- * @example
- *
- * rotateToPairs([0, 1, 2]) -> [[0, 1], [1, 2], [2, 0]]
- */
-var rotateToPairs = R.converge(
-  R.zip,
-  R.identity,
-  rotateList
-);
 
 //----------------------------------------------
 // factories
@@ -79,7 +92,9 @@ gama.Point = function(x, y) {
  * 
  * gama.Vector(1, 2)// -> {x: 1, y: 2}
  */
-gama.Vector = gama.Point;
+gama.Vector = function(x, y) {
+  return gama.isVector(x) && gama.isVector(y) ? gama.subtract(x, y) : gama.Point(x, y);
+};
 
 /**
  * Creates an object representing rectangle.
@@ -224,7 +239,9 @@ gama.rad2deg = function(rotation) {
  * gama.isPoint({x: 1, y: 2})// -> true
  * gama.isPoint('s')// -> false
  */
-gama.isPoint = R.and(R.has('x'), R.has('y'));
+gama.isPoint = function(input) {
+  return R.has('x', input) && R.has('y', input);
+};
 
 /**
  * Checks whether given value is vector (contains x and y properties).
@@ -255,11 +272,8 @@ gama.isVector = gama.isPoint;
  * @param {Point|Vector} b
  * @return {Point|Vector}
  */
-gama.add = R.op(function(a, b) {
-  return {
-    x: a.x + b.x,
-    y: a.y + b.y
-  };
+gama.add = R.curryN(2, function(a, b) {
+  return gama.Point(a.x + b.x, a.y + b.y);
 });
 
 /**
@@ -274,11 +288,8 @@ gama.add = R.op(function(a, b) {
  * @param {Point|Vector} b
  * @return {Point|Vector}
  */
-gama.subtract = R.op(function(a, b) {
-  return {
-    x: b.x - a.x,
-    y: b.y - a.y
-  };
+gama.subtract = R.curryN(2, function(a, b) {
+  return gama.Point(b.x - a.x, b.y - a.y);
 });
 
 /**
@@ -303,10 +314,9 @@ gama.length2 = function(vector) {
  * @param {Vector}
  * @return {Number}
  */
-gama.length = R.pipe(
-  gama.length2,
-  Math.sqrt
-);
+gama.length = function(vector) {
+  return Math.sqrt(gama.length2(vector));
+};
 
 /**
  * Calculates the distance between two points.
@@ -318,12 +328,9 @@ gama.length = R.pipe(
  * @param {Point} b
  * @return {Number}
  */
-gama.distance2 = R.op(
-  R.pipe(
-    gama.subtract,
-    gama.length2
-  )
-);
+gama.distance2 = R.curryN(2, function(a, b) {
+  return gama.length2(gama.subtract(a, b));
+});
 
 /**
  * Calculates the distance between two points.
@@ -335,28 +342,8 @@ gama.distance2 = R.op(
  * @param {Point} b
  * @return {Number}
  */
-gama.distance = R.op(
-  R.pipe(
-    gama.distance2,
-    Math.sqrt
-  )
-);
-
-/**
- * Applies transformation matrix on given point.
- *
- * @func
- * @category Function
- * @sig Matrix -> Point -> Point
- * @param {Matrix} matrix
- * @param {Point} point
- * @return {Point}
- */
-gama.transformPoint = R.op(function(matrix, point) {
-  return gama.Point(
-    matrix[0] * point.x + matrix[3] * point.y + matrix[6],
-    matrix[1] * point.x + matrix[4] * point.y + matrix[7]
-  );
+gama.distance = R.curryN(2, function(a, b) {
+  return Math.sqrt(gama.distance2(a, b));
 });
 
 /**
@@ -369,7 +356,7 @@ gama.transformPoint = R.op(function(matrix, point) {
  * @return {Vector}
  */
 gama.normal = function(vector) {
-  return gama.Vector(vector.y, -vector.x);
+  return gama.Point(vector.y, -vector.x);// 'gama.Vector
 };
 
 /**
@@ -382,7 +369,7 @@ gama.normal = function(vector) {
  * @param {Vector} b
  * @return {Number}
  */
-gama.dot = R.curry(function(a, b) {
+gama.dot = R.curryN(2, function(a, b) {
   return a.x * b.x + a.y * b.y;
 });
 
@@ -396,7 +383,7 @@ gama.dot = R.curry(function(a, b) {
  * @param {Vector} b
  * @return {Number} cos
  */
-gama.angle = R.op(function(a, b) {
+gama.angle = R.curryN(2, function(a, b) {
   return gama.dot(a, b) / (gama.length(a) * gama.length(b));
 });
 
@@ -411,7 +398,7 @@ gama.angle = R.op(function(a, b) {
  */
 gama.unit = function(vector) {
   var t = gama.length(vector);
-  return gama.Vector(vector.x / t, vector.y / t);
+  return gama.Point(vector.x / t, vector.y / t);// 'gama.Vector
 };
 
 /**
@@ -424,7 +411,7 @@ gama.unit = function(vector) {
  * @return {Vector}
  */
 gama.negate = function(vector) {
-  return gama.Vector(-vector.x, -vector.y);
+  return gama.Point(-vector.x, -vector.y);// 'gama.Vector
 };
 
 /**
@@ -440,16 +427,26 @@ gama.negate = function(vector) {
  * gama.scaleVector(2)(gama.Vector(1, 2))// -> gama.Vector(2, 4)
  * gama.scaleVector(gama.Vector(3, 1))(gama.Vector(1, 2))// -> gama.Vector(3, 2)
  */
-gama.scaleVector = R.op(
-  R.useWith(
-    function(a, b) { return gama.Vector(a.x * b.x, a.y * b.y); },
-    R.cond(
-      [gama.isVector, R.identity],
-      [R.T,           function(scalar) { return gama.Vector(scalar, scalar); }]
-    ),
-    R.identity
-  )
-);
+gama.scaleVector = R.curryN(2, function(a, b) {
+  return gama.isPoint(a) ? gama.Point(a.x * b.x, a.y * b.y) : gama.Point(a * b.x, a * b.y);// 'gama.Vector
+});
+
+/**
+ * Applies transformation matrix on given point.
+ *
+ * @func
+ * @category Function
+ * @sig Matrix -> Point -> Point
+ * @param {Matrix} matrix
+ * @param {Point} point
+ * @return {Point}
+ */
+gama.transformPoint = R.curryN(2, function(matrix, point) {
+  return gama.Point(
+    matrix[0] * point.x + matrix[3] * point.y + matrix[6],
+    matrix[1] * point.x + matrix[4] * point.y + matrix[7]
+  );
+});
 
 //----------------------------------------------
 // matrix
@@ -464,7 +461,7 @@ gama.scaleVector = R.op(
  * @param {Matrix} b
  * @return {Matrix}
  */
-gama.multiply = R.op(function(a, b) {
+gama.multiplyMatrix = R.curryN(2, function(a, b) {
   return [
     b[0] * a[0] + b[1] * a[3] + b[2] * a[6],
     b[0] * a[1] + b[1] * a[4] + b[2] * a[7],
@@ -488,9 +485,9 @@ gama.multiply = R.op(function(a, b) {
  * @param {Matrix} matrix
  * @return {Matrix}
  */
-gama.translate = R.op(function(vector, matrix) {
+gama.translateMatrix = R.curryN(2, function(vector, matrix) {
   var transformation = gama.Matrix(1, 0, 0, 1, vector.x, vector.y);
-  return gama.multiply(matrix, transformation);
+  return gama.multiplyMatrix(matrix, transformation);
 });
 
 /**
@@ -503,9 +500,9 @@ gama.translate = R.op(function(vector, matrix) {
  * @param {Matrix} matrix
  * @return {Matrix}
  */
-gama.scale = R.curry(function(vector, matrix) {
+gama.scaleMatrix = R.curryN(2, function(vector, matrix) {
   var transformation = gama.Matrix(vector.x, 0, 0, vector.y, 0, 0);
-  return gama.multiply(matrix, transformation);
+  return gama.multiplyMatrix(matrix, transformation);
 });
 
 /**
@@ -518,11 +515,11 @@ gama.scale = R.curry(function(vector, matrix) {
  * @param {Matrix} matrix
  * @return {Matrix}
  */
-gama.rotate = R.op(function(angle, matrix) {
+gama.rotateMatrix = R.curryN(2, function(angle, matrix) {
   var cos = Math.cos(angle);
   var sin = Math.sin(angle);
   var transformation = gama.Matrix(cos, sin, -sin, cos, 0, 0);
-  return gama.multiply(matrix, transformation);
+  return gama.multiplyMatrix(matrix, transformation);
 });
 
 /**
@@ -536,21 +533,21 @@ gama.rotate = R.op(function(angle, matrix) {
  * @param {Matrix} matrix
  * @return {Matrix}
  */
-gama.rotateAboutPoint = R.curry(function(angle, point, matrix) {
-  return R.pipe(
-    gama.translate(point),
-    gama.rotate(angle),
-    gama.translate(gama.negate(point))
+gama.rotateAround = R.curryN(3, function(angle, point, matrix) {
+  return R.compose(
+    gama.translateMatrix(gama.negate(point)),
+    gama.rotateMatrix(angle),
+    gama.translateMatrix(point)
   )(matrix);
 });
 
 //----------------------------------------------
 // polygon
 
-var minX = R.pipe(R.map(R.prop('x')), R.min);
-var minY = R.pipe(R.map(R.prop('y')), R.min);
-var maxX = R.pipe(R.map(R.prop('x')), R.max);
-var maxY = R.pipe(R.map(R.prop('y')), R.max);
+var minX = R.compose(R.min, R.map(R.prop('x')));
+var minY = R.compose(R.min, R.map(R.prop('y')));
+var maxX = R.compose(R.max, R.map(R.prop('x')));
+var maxY = R.compose(R.max, R.map(R.prop('y')));
 
 /**
  * Returns the top left vertex of polygon's bounding box.
@@ -614,10 +611,9 @@ gama.boundingBox = function(polygon) {
  * @param {Polygon}
  * @return {Array} List of vectors.
  */
-gama.axes = R.pipe(
-  R.prop('vertices'),
-  rotateToPairs,
-  R.map(R.apply(gama.subtract))
+gama.axes = R.compose(
+  R.mapIndexed(axesFromVertices),
+  R.prop('vertices')
 );
 
 /**
@@ -630,17 +626,12 @@ gama.axes = R.pipe(
  * @param {Polygon} polygon
  * @return {Point}
  */
-gama.transformPolygon = R.op(
-  R.pipe(
-    R.useWith(
-      R.map,
-      gama.transformPoint,
-      R.prop('vertices')
-    ),
-    R.of,
-    R.apply(gama.Polygon)
-  )
-);
+gama.transformPolygon = R.curryN(2, function(matrix, polygon) {
+  return R.compose(
+    gama.Polygon,
+    R.map(gama.transformPoint(matrix))
+  )(polygon.vertices);
+});
 
 /**
  * Checks whether given polygon is concave.
@@ -651,14 +642,10 @@ gama.transformPolygon = R.op(
  * @param {Polygon}
  * @return {Boolean}
  */
-gama.isConcave = R.pipe(
-  gama.axes,
-  rotateToPairs,
-  R.map(R.apply(gama.dot)),
-  R.and(
-    R.any(R.gt(0)),
-    R.any(R.lt(0))
-  )
+gama.isConcave = R.compose(
+  dotsConcave,
+  R.mapIndexed(dotsFromAxes),
+  gama.axes
 );
 
 /**
@@ -670,7 +657,9 @@ gama.isConcave = R.pipe(
  * @param {Polygon}
  * @return {Boolean}
  */
-gama.isConvex = R.not(gama.isConcave);
+gama.isConvex = function(polygon) {
+  return !gama.isConcave(polygon);
+};
 
 /**
  * Creates polygon from given rectangle.
@@ -703,7 +692,7 @@ gama.rectangle2polygon = function(rectangle) {
  * @param {Point} vertex
  * @return {Point}
  */
-gama.projectPointToAxis = R.op(function(axis, vertex) {
+gama.projectPointToAxis = R.curryN(2, function(axis, vertex) {
   var t = (vertex.x * axis.x + vertex.y * axis.y) / (axis.x * axis.x + axis.y * axis.y);
   return gama.Point(t * axis.x, t * axis.y);
 });
@@ -718,29 +707,9 @@ gama.projectPointToAxis = R.op(function(axis, vertex) {
  * @param {Array} b
  * @return {Boolean}
  */
-gama.projectionsOverlap = R.op(function(a, b) {
+gama.projectionsOverlap = R.curryN(2, function(a, b) {
   return R.head(b) <= R.last(a) && R.last(b) >= R.head(a);
 });
-
-/**
- * @param {Vector} axis
- * @param {Polygon} polygon
- * @return {Array} projection
- */
-var projectPolygonToAxis = R.op(
-  R.pipe(
-    R.useWith(
-      R.map,
-      R.converge(
-        R.pipe,
-        gama.projectPointToAxis,
-        gama.dot
-      ),
-      R.prop('vertices')
-    ),
-    sortAsc
-  )
-);
 
 /**
  * Checks whether point lies inside rectangle.
@@ -752,7 +721,7 @@ var projectPolygonToAxis = R.op(
  * @param {Rectangle} rectangle
  * @return {Boolean}
  */
-gama.testPointRectangle = R.op(function(point, rectangle) {
+gama.testPointRectangle = R.curryN(2, function(point, rectangle) {
   return point.x >= rectangle.x && point.x <= rectangle.x + rectangle.width && point.y >= rectangle.y && point.y <= rectangle.y + rectangle.height;
 });
 
@@ -766,7 +735,7 @@ gama.testPointRectangle = R.op(function(point, rectangle) {
  * @param {Circle} circle
  * @return {Boolean}
  */
-gama.testPointCircle = R.op(function(point, circle) {
+gama.testPointCircle = R.curryN(2, function(point, circle) {
   return gama.distance(circle.position, point) <= circle.radius;
 });
 
@@ -780,27 +749,17 @@ gama.testPointCircle = R.op(function(point, circle) {
  * @param {Polygon} polygon
  * @return {Boolean}
  */
-gama.testPointPolygon = R.op(
-  R.useWith(
-    R.pipe(
-      function(point, vertices) {
-        return R.map(function(v) {
-          var vertex = v[1];
-          var prevVertex = v[0];
+gama.testPointPolygon = R.curryN(2, function(point, polygon) {
+  return R.compose(
+    R.reduce(reduceTestPointPolygonResult, false),
+    R.mapIndexed(function(vertex, i, vertices) {
+      var prevVertex = vertices[(vertices.length + i - 1) % vertices.length];
 
-          return ((vertex.y > point.y) != (prevVertex.y > point.y)) &&
-            (point.x <= (prevVertex.x - vertex.x) * (point.y - vertex.y) / (prevVertex.y - vertex.y) + vertex.x);
-        })(vertices);
-      },
-      R.reduce(function(a, b) { return b ? !a : a; }, false)
-    ),
-    R.identity,
-    R.pipe(
-      R.prop('vertices'),
-      rotateToPairs
-    )
-  )
-);
+      return ((vertex.y > point.y) != (prevVertex.y > point.y)) &&
+        (point.x <= (prevVertex.x - vertex.x) * (point.y - vertex.y) / (prevVertex.y - vertex.y) + vertex.x);
+    })
+  )(polygon.vertices);
+});
 
 /**
  * Checks whether two circles overlap.
@@ -812,7 +771,7 @@ gama.testPointPolygon = R.op(
  * @param {Circle} b
  * @return {Boolean}
  */
-gama.testCircleCircle = R.curry(function(a, b) {
+gama.testCircleCircle = R.curryN(2, function(a, b) {
   return gama.distance(a.position, b.position) <= a.radius + b.radius;
 });
 
@@ -826,7 +785,7 @@ gama.testCircleCircle = R.curry(function(a, b) {
  * @param {Polygon} b
  * @return {Boolean}
  */
-gama.testPolygonPolygon = R.curry(function(a, b) {
+gama.testPolygonPolygon = R.curryN(2, function(a, b) {
   var axes = R.union(gama.axes(a), gama.axes(b));
 
   return !R.any(function(axis) {

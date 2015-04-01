@@ -25,18 +25,18 @@ describe('Matrix', function()
     var A = [1, 4, 7, 2, 5, 8, 3, 6, 9];
     var B = [4, 10, 4, 2, 12, 5, 8, 4, 9];
 
-    assert.deepEqual([36, 90, 144, 41, 98, 155, 43, 106, 169], gama.multiply(A, B));
+    assert.deepEqual([36, 90, 144, 41, 98, 155, 43, 106, 169], gama.multiplyMatrix(A, B));
   });
 
   it('translate', function() {
-    assert.deepEqual([1, 0, 0, 0, 1, 0, 2, 4, 1], gama.translate(gama.Vector(2, 4), gama.EmptyMatrix()));
+    assert.deepEqual([1, 0, 0, 0, 1, 0, 2, 4, 1], gama.translateMatrix(gama.Vector(2, 4), gama.EmptyMatrix()));
   });
 
   it('scale', function() {
-    assert.deepEqual([2, 0, 0, 0, 4, 0, 0, 0, 1], gama.scale(gama.Vector(2, 4), gama.EmptyMatrix()));
+    assert.deepEqual([2, 0, 0, 0, 4, 0, 0, 0, 1], gama.scaleMatrix(gama.Vector(2, 4), gama.EmptyMatrix()));
   });
 
   it('rotate', function() {
-    assert.deepEqual([1, 0, 0, 0, 1, 0, 0, 0, 1], gama.rotate(0, gama.EmptyMatrix()));
+    assert.deepEqual([1, 0, 0, 0, 1, 0, 0, 0, 1], gama.rotateMatrix(0, gama.EmptyMatrix()));
   });
 });

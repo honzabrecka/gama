@@ -28,18 +28,8 @@ describe('Point', function()
     assert.equal(false, gama.isPoint(4));
   });
 
-  it('rotatePointAboutPoint', function()
-  {
-    var matrix = gama.rotateAboutPoint(7, gama.Point(20, 30))(gama.EmptyMatrix());
-    asserts.points(gama.Point(19.030843443754843, 15.891111469379062), gama.transformPoint(matrix)(gama.Point(10, 20)));
-  });
-
   it('transformPoint', function() {
-    var matrix = gama.EmptyMatrix();
-
-    asserts.points(gama.Point(1, 2), gama.transformPoint(matrix)(gama.Point(1, 2)));
-    asserts.points(gama.Point(5, 10), gama.transformPoint(gama.translate(gama.Vector(4, 8), matrix))(gama.Point(1, 2)));
-    asserts.points(gama.Point(-2, 1), gama.transformPoint(gama.rotate(Math.PI * .5, matrix))(gama.Point(1, 2)));
+    asserts.points(gama.Point(1, 2), gama.transformPoint(gama.EmptyMatrix())(gama.Point(1, 2)));
   });
 
   it('add', function()
@@ -60,5 +50,11 @@ describe('Point', function()
   it('distance', function()
   {
     asserts.points(1.4142135623730951, gama.distance(gama.Point(1, 1), gama.Point(2, 2)));
+  });
+
+  it('rotateAround', function()
+  {
+    var matrix = gama.rotateAround(7, gama.Point(20, 30))(gama.EmptyMatrix());
+    asserts.points(gama.Point(19.030843443754843, 15.891111469379062), gama.transformPoint(matrix)(gama.Point(10, 20)));
   });
 });
