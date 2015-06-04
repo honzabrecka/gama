@@ -13,7 +13,7 @@ describe('Matrix', function()
 {
   it('factory', function()
   {
-    assert.deepEqual([1, 2, 0, 3, 4, 0, 5, 6, 1], gama.Matrix(1, 2, 3, 4, 5, 6));
+    assert.deepEqual([1, 2, 5, 3, 4, 6, 0, 0, 1], gama.Matrix(1, 2, 3, 4, 5, 6));
   });
 
   it('empty matrix factory', function()
@@ -29,7 +29,7 @@ describe('Matrix', function()
   });
 
   it('translate', function() {
-    assert.deepEqual([1, 0, 0, 0, 1, 0, 2, 4, 1], gama.translateMatrix(gama.Vector(2, 4), gama.EmptyMatrix()));
+    assert.deepEqual([1, 0, 2, 0, 1, 4, 0, 0, 1], gama.translateMatrix(gama.Vector(2, 4), gama.EmptyMatrix()));
   });
 
   it('scale', function() {

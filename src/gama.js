@@ -170,10 +170,10 @@ gama.Circle = function(position, radius) {
  * @return {Matrix}
  * @example
  * 
- * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 0, 3, 4, 0, 5, 6, 1]
+ * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 3, 4, 5, 6, 0, 0, 1]
  */
 gama.Matrix = function(a, b, c, d, tx, ty) {
-  return [a, b, 0, c, d, 0, tx, ty, 1];
+  return [a, b, tx, c, d, ty, 0, 0, 1];
 };
 
 /**
@@ -443,8 +443,8 @@ gama.scaleVector = R.curryN(2, function(a, b) {
  */
 gama.transformPoint = R.curryN(2, function(matrix, point) {
   return gama.Point(
-    matrix[0] * point.x + matrix[3] * point.y + matrix[6],
-    matrix[1] * point.x + matrix[4] * point.y + matrix[7]
+    matrix[0] * point.x + matrix[1] * point.y + matrix[2],
+    matrix[3] * point.x + matrix[4] * point.y + matrix[5]
   );
 });
 
@@ -518,7 +518,7 @@ gama.scaleMatrix = R.curryN(2, function(vector, matrix) {
 gama.rotateMatrix = R.curryN(2, function(angle, matrix) {
   var cos = Math.cos(angle);
   var sin = Math.sin(angle);
-  var transformation = gama.Matrix(cos, sin, -sin, cos, 0, 0);
+  var transformation = gama.Matrix(cos, -sin, sin, cos, 0, 0);
   return gama.multiplyMatrix(matrix, transformation);
 });
 
@@ -535,9 +535,9 @@ gama.rotateMatrix = R.curryN(2, function(angle, matrix) {
  */
 gama.rotateAround = R.curryN(3, function(angle, point, matrix) {
   return R.compose(
-    gama.translateMatrix(gama.negate(point)),
+    gama.translateMatrix(point),
     gama.rotateMatrix(angle),
-    gama.translateMatrix(point)
+    gama.translateMatrix(gama.negate(point))
   )(matrix);
 });
 
