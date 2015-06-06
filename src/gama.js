@@ -541,6 +541,34 @@ gama.rotateAround = R.curryN(3, function(angle, point, matrix) {
   )(matrix);
 });
 
+/**
+ * Invert a matrix
+ *
+ * @func
+ * @category matrix
+ * @sig Matrix -> Matrix
+ * @param {Matrix} m
+ * @return {Matrix}
+ */
+gama.invertMatrix = function(m){
+  var det = m[0] * m[4] * m[8] +
+            m[1] * m[5] * m[6] +
+            m[2] * m[3] * m[7] -
+            m[0] * m[5] * m[7] -
+            m[1] * m[3] * m[8] -
+            m[2] * m[4] * m[6];
+
+  return [(m[4] * m[8] - m[5] * m[7]) / det,
+          (m[2] * m[7] - m[1] * m[8]) / det,
+          (m[1] * m[5] - m[2] * m[4]) / det,
+          (m[5] * m[6] - m[3] * m[8]) / det,
+          (m[0] * m[8] - m[2] * m[6]) / det,
+          (m[2] * m[3] - m[0] * m[5]) / det,
+          (m[3] * m[7] - m[4] * m[6]) / det,
+          (m[1] * m[6] - m[0] * m[7]) / det,
+          (m[0] * m[4] - m[1] * m[3]) / det];
+};
+
 //----------------------------------------------
 // polygon
 
