@@ -18,7 +18,6 @@
   },
   "main": "src/gama.js",
   "scripts": {
-    "postinstall": "gulp dist",
     "lint": "gulp linter",
     "test": "gulp test"
   },
