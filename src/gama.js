@@ -240,7 +240,7 @@ gama.rad2deg = function(rotation) {
  * gama.isPoint('s')// -> false
  */
 gama.isPoint = function(input) {
-  return R.has('x', input) && R.has('y', input);
+  return !!(input && R.has('x', input) && R.has('y', input));
 };
 
 /**
