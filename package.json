@@ -17,10 +17,6 @@
     "url": "git@github.com:honzabrecka/gama.git"
   },
   "main": "src/gama.js",
-  "scripts": {
-    "lint": "gulp linter",
-    "test": "gulp test"
-  },
   "dependencies": {
     "ramda": "0.13.*"
   },
