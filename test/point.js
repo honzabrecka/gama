@@ -29,8 +29,7 @@ describe('Point', function()
   });
 
   it('transformPoint', function() {
-    console.log(gama.transformPoint(gama.Matrix(1, 0, 2, 0, 1, 5), gama.Point(1, 2)));
-    asserts.points(gama.Point(9, 7), gama.transformPoint(gama.Matrix(1, 0, 0, 1, 8, 5), gama.Point(1, 2)));
+    asserts.points(gama.Point(9, 7), gama.transformPoint(gama.Matrix(1, 0, 8, 0, 1, 5), gama.Point(1, 2)));
   });
 
   it('add', function()
