@@ -11,8 +11,6 @@ before_script:
 script:
   - gulp linter
   - gulp test
-  - rm dist/gama.min.js
   - gulp dist
-  - git diff --exit-code
   - gulp jsdoc-style
   - gulp jsdoc
