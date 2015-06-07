@@ -463,15 +463,15 @@ gama.transformPoint = R.curryN(2, function(matrix, point) {
  */
 gama.multiplyMatrix = R.curryN(2, function(a, b) {
   return [
-    b[0] * a[0] + b[1] * a[3] + b[2] * a[6],
-    b[0] * a[1] + b[1] * a[4] + b[2] * a[7],
-    b[0] * a[2] + b[1] * a[5] + b[2] * a[8],
-    b[3] * a[0] + b[4] * a[3] + b[5] * a[6],
-    b[3] * a[1] + b[4] * a[4] + b[5] * a[7],
-    b[3] * a[2] + b[4] * a[5] + b[5] * a[8],
-    b[6] * a[0] + b[7] * a[3] + b[8] * a[6],
-    b[6] * a[1] + b[7] * a[4] + b[8] * a[7],
-    b[6] * a[2] + b[7] * a[5] + b[8] * a[8]
+    a[0] * b[0] + a[1] * b[3] + a[2] * b[6],
+    a[0] * b[1] + a[1] * b[4] + a[2] * b[7],
+    a[0] * b[2] + a[1] * b[5] + a[2] * b[8],
+    a[3] * b[0] + a[4] * b[3] + a[5] * b[6],
+    a[3] * b[1] + a[4] * b[4] + a[5] * b[7],
+    a[3] * b[2] + a[4] * b[5] + a[5] * b[8],
+    a[6] * b[0] + a[7] * b[3] + a[8] * b[6],
+    a[6] * b[1] + a[7] * b[4] + a[8] * b[7],
+    a[6] * b[2] + a[7] * b[5] + a[8] * b[8]
   ];
 });
 
@@ -487,7 +487,7 @@ gama.multiplyMatrix = R.curryN(2, function(a, b) {
  */
 gama.translateMatrix = R.curryN(2, function(vector, matrix) {
   var transformation = gama.Matrix(1, 0, vector.x, 0, 1, vector.y);
-  return gama.multiplyMatrix(matrix, transformation);
+  return gama.multiplyMatrix(transformation, matrix);
 });
 
 /**
@@ -502,7 +502,7 @@ gama.translateMatrix = R.curryN(2, function(vector, matrix) {
  */
 gama.scaleMatrix = R.curryN(2, function(vector, matrix) {
   var transformation = gama.Matrix(vector.x, 0, 0, 0, vector.y, 0);
-  return gama.multiplyMatrix(matrix, transformation);
+  return gama.multiplyMatrix(transformation, matrix);
 });
 
 /**
@@ -519,7 +519,7 @@ gama.rotateMatrix = R.curryN(2, function(angle, matrix) {
   var cos = Math.cos(angle);
   var sin = Math.sin(angle);
   var transformation = gama.Matrix(cos, -sin, 0, sin, cos, 0);
-  return gama.multiplyMatrix(matrix, transformation);
+  return gama.multiplyMatrix(transformation, matrix);
 });
 
 /**
