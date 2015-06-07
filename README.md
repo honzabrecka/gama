@@ -44,6 +44,6 @@ $ gulp dist
 $ npm install -g gulp
 $ npm install
 
-$ gulp linter
+$ gulp lint
 $ gulp test
 ```

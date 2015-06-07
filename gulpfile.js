@@ -38,7 +38,7 @@ gulp.task('test', function()
     });
 });
 
-gulp.task('linter', function()
+gulp.task('lint', function()
 {
   gulp
     .src('./src/*.js')
@@ -72,10 +72,10 @@ gulp.task('jsdoc-style', function() {
     .pipe(gulp.dest('./docs/'));
 });
 
-gulp.task('default', ['linter', 'test'], function()
+gulp.task('default', ['lint', 'test'], function()
 {
   gulp.watch('./src/*.js', function()
   {
-    gulp.run('linter', 'test');
+    gulp.run('lint', 'test');
   });
 });

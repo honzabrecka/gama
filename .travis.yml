@@ -9,7 +9,7 @@ before_script:
   - npm install
   - bower install
 script:
-  - gulp linter
+  - gulp lint
   - gulp test
   - gulp dist
   - gulp jsdoc-style
