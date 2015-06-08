@@ -24,8 +24,8 @@ var asc = function(a, b) {
 
 var axesFromVertices = function(vertex, i, vertices) {
   return gama.subtract(// same as gama.Vector, but without any condition
-    vertex,
-    vertices[(i + 1) % vertices.length]    
+    vertices[(i + 1) % vertices.length],
+    vertex
   );
 };
 
@@ -93,7 +93,7 @@ gama.Point = function(x, y) {
  * gama.Vector(1, 2)// -> {x: 1, y: 2}
  */
 gama.Vector = function(x, y) {
-  return gama.isVector(x) && gama.isVector(y) ? gama.subtract(x, y) : gama.Point(x, y);
+  return gama.isVector(x) && gama.isVector(y) ? gama.subtract(y, x) : gama.Point(x, y);
 };
 
 /**
@@ -289,7 +289,7 @@ gama.add = R.curryN(2, function(a, b) {
  * @return {Point|Vector}
  */
 gama.subtract = R.curryN(2, function(a, b) {
-  return gama.Point(b.x - a.x, b.y - a.y);
+  return gama.Point(a.x - b.x, a.y - b.y);
 });
 
 /**
