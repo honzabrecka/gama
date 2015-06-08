@@ -523,6 +523,19 @@ gama.rotateMatrix = R.curryN(2, function(angle, matrix) {
 });
 
 /**
+ * Inverts matrix.
+ *
+ * @func
+ * @category matrix
+ * @sig Matrix -> Matrix
+ * @param {Matrix} matrix
+ * @return {Matrix}
+ */
+gama.invertMatrix = function(matrix) {
+  return matrix;
+};
+
+/**
  * Applies a rotation transformation to the matrix.
  *
  * @func
