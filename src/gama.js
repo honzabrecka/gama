@@ -91,6 +91,7 @@ gama.Point = function(x, y) {
  * @example
  * 
  * gama.Vector(1, 2)// -> {x: 1, y: 2}
+ * gama.Vector(gama.Vector(1, 2), gama.Vector(10, 9))// -> {x: 9, y: 7}
  */
 gama.Vector = function(x, y) {
   return gama.isVector(x) && gama.isVector(y) ? gama.subtract(y, x) : gama.Point(x, y);
@@ -158,19 +159,22 @@ gama.Circle = function(position, radius) {
 
 /**
  * Creates a list representing 3x3 matrix.
- *
  * @func
  * @category factory
  * @param {Number} a
  * @param {Number} b
+ * @param {Number} tx
  * @param {Number} c
  * @param {Number} d
- * @param {Number} tx
  * @param {Number} ty
  * @return {Matrix}
  * @example
  * 
  * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 3, 4, 5, 6, 0, 0, 1]
+ *
+ * // [a, b, tx,
+ * //  c, d, ty,
+ * //  u, v, w]
  */
 gama.Matrix = function(a, b, tx, c, d, ty) {
   return [a, b, tx, c, d, ty, 0, 0, 1];
