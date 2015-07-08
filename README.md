@@ -25,10 +25,6 @@ To use directly in the browser:
 var gama = require('gama');
 ```
 
-## Documentation
-
-Please review the [API documentation](http://honzabrecka.com/gama).
-
 ## Building
 
 ```bash
