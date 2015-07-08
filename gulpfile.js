@@ -7,8 +7,6 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var header = require('gulp-header');
-var jsdoc = require('gulp-jsdoc');
-var less = require('gulp-less');
 
 var pkg = require('./package.json');
 var banner = [
@@ -56,20 +54,6 @@ gulp.task('dist', function() {
     .pipe(uglify())
     .pipe(header(banner, {pkg: pkg}))
     .pipe(gulp.dest('./dist/'));
-});
-
-gulp.task('jsdoc', function() {
-  gulp
-    .src(['./src/*.js', './README.md'])
-    .pipe(jsdoc.parser())
-    .pipe(jsdoc.generator('./docs', {path: 'lib/doc/jsdoc-template/'}));
-});
-
-gulp.task('jsdoc-style', function() {
-  gulp
-    .src('./lib/doc/less/style.less')
-    .pipe(less())
-    .pipe(gulp.dest('./docs/'));
 });
 
 gulp.task('default', ['lint', 'test'], function()

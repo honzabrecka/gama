@@ -22,8 +22,5 @@
     "bower_components",
     "test",
     "coverage"
-  ],
-  "devDependencies": {
-    "bootstrap": "3.3.*"
-  }
+  ]
 }

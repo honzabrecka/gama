@@ -12,5 +12,3 @@ script:
   - gulp lint
   - gulp test
   - gulp dist
-  - gulp jsdoc-style
-  - gulp jsdoc
