@@ -22,22 +22,19 @@ var banner = [
   ''
 ].join('\n');
 
-gulp.task('test', function()
-{
+gulp.task('test', function() {
   gulp
     .src('./src/*.js')
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())
-    .on('finish', function ()
-    {
+    .on('finish', function () {
       gulp.src('./test/*.js')
         .pipe(mocha())
         .pipe(istanbul.writeReports());
     });
 });
 
-gulp.task('lint', function()
-{
+gulp.task('lint', function() {
   gulp
     .src('./src/*.js')
     .pipe(jshint())
@@ -56,10 +53,8 @@ gulp.task('dist', function() {
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('default', ['lint', 'test'], function()
-{
-  gulp.watch('./src/*.js', function()
-  {
+gulp.task('default', ['lint', 'test'], function() {
+  gulp.watch('./src/*.js', function() {
     gulp.run('lint', 'test');
   });
 });
