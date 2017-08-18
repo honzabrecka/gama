@@ -11,35 +11,15 @@ Gama is based on Ramda and follows its philosophy. The primary features of Gama 
 
 ## Installation
 
-To use with node:
-
-	$ npm install gama
-
-To use directly in the browser:
-
-	<script src="path/to/yourCopyOfGama/dist/gama.min.js"></script>
-
-## Use
-
-```js
-var gama = require('gama');
+```console
+npm install gama
 ```
 
-## Building
+## Testing
 
-```bash
-$ npm install -g gulp
-$ npm install
+```console
+npm install
 
-$ gulp dist
-```
-
-## Testing
-
-```bash
-$ npm install -g gulp
-$ npm install
-
-$ gulp lint
-$ gulp test
+npm run lint
+npm run test
 ```
