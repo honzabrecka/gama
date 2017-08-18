@@ -1,4 +1,4 @@
-# Γ [![Build Status](https://travis-ci.org/honzabrecka/gama.svg?branch=master)](https://travis-ci.org/honzabrecka/gama)
+# Γ [![CircleCI](https://circleci.com/gh/honzabrecka/gama/tree/master.svg?style=svg&circle-token=d63b094bdf5a7fdf56f1c6780b0fe574da011474)](https://circleci.com/gh/honzabrecka/gama/tree/master)
 
 A practical 2D math/geometry library for functional JavaScript, based on [Ramda](http://ramdajs.com/).
 
