@@ -8,6 +8,10 @@
 
 var R = require('ramda');
 
+R.mapIndexed = R.curry(function(f, col) {
+  return col.map(f);
+});
+
 /**
  * A practical math/geometry library for functional JavaScript, based on Ramda.
  *
@@ -32,7 +36,7 @@ var axesFromVertices = function(vertex, i, vertices) {
 var dotsFromAxes = function(axis, i, axes) {
   return gama.dot(
     axis,
-    axes[(i + 1) % axes.length]    
+    axes[(i + 1) % axes.length]
   );
 };
 
@@ -70,7 +74,7 @@ var projectPolygonToAxis = R.curryN(2, function(axis, polygon) {
  * @param {Number} y
  * @return {Point}
  * @example
- * 
+ *
  * gama.Point(1, 2)// -> {x: 1, y: 2}
  */
 gama.Point = function(x, y) {
@@ -89,7 +93,7 @@ gama.Point = function(x, y) {
  * @param {Number} y
  * @return {Vector}
  * @example
- * 
+ *
  * gama.Vector(1, 2)// -> {x: 1, y: 2}
  * gama.Vector(gama.Vector(1, 2), gama.Vector(10, 9))// -> {x: 9, y: 7}
  */
@@ -108,7 +112,7 @@ gama.Vector = function(x, y) {
  * @param {Number} height
  * @return {Rectangle}
  * @example
- * 
+ *
  * gama.Rectangle(1, 2, 3, 4)// -> {x: 1, y: 2, width: 3, height: 4}
  */
 gama.Rectangle = function(x, y, width, height) {
@@ -128,7 +132,7 @@ gama.Rectangle = function(x, y, width, height) {
  * @param {Array} vertices List of vertices.
  * @return {Polygon}
  * @example
- * 
+ *
  * // triangle
  * gama.Polygon([gama.Point(1, 2), gama.Point(2, 3), gama.Point(1, 3)])
  */
@@ -147,7 +151,7 @@ gama.Polygon = function(vertices) {
  * @param {Number} radius
  * @return {Circle}
  * @example
- * 
+ *
  * gama.Circle(gama.Point(1, 2), 2)
  */
 gama.Circle = function(position, radius) {
@@ -169,7 +173,7 @@ gama.Circle = function(position, radius) {
  * @param {Number} ty
  * @return {Matrix}
  * @example
- * 
+ *
  * gama.Matrix(1, 2, 3, 4, 5, 6)// -> [1, 2, 3, 4, 5, 6, 0, 0, 1]
  *
  * // [a, b, tx,
@@ -187,7 +191,7 @@ gama.Matrix = function(a, b, tx, c, d, ty) {
  * @category factory
  * @return {Matrix}
  * @example
- * 
+ *
  * gama.EmptyMatrix()// -> [1, 0, 0, 0, 1, 0, 0, 0, 1]
  */
 gama.EmptyMatrix = function() {
@@ -237,7 +241,7 @@ gama.rad2deg = function(rotation) {
  * @param {Object}
  * @return {Boolean}
  * @example
- * 
+ *
  * gama.isPoint(gama.Vector(1, 2))// -> true
  * gama.isPoint(gama.Point(1, 2))// -> true
  * gama.isPoint({x: 1, y: 2})// -> true
@@ -256,7 +260,7 @@ gama.isPoint = function(input) {
  * @param {Object}
  * @return {Boolean}
  * @example
- * 
+ *
  * gama.isVector(gama.Point(1, 2))// -> true
  * gama.isVector(gama.Vector(1, 2))// -> true
  * gama.isVector({x: 1, y: 2})// -> true
@@ -268,7 +272,7 @@ gama.isVector = gama.isPoint;
  * Adds the coordinates of a point|vector (an object that contains x and y properties)
  * to the coordinates of b point|vector (an object that contains x and y properties)
  * to create a new point.
- * 
+ *
  * @func
  * @category vector
  * @sig Point|Vector -> Point|Vector -> Point|Vector
@@ -284,7 +288,7 @@ gama.add = R.curryN(2, function(a, b) {
  * Subtracts the coordinates of b point|vector (an object that contains x and y properties)
  * from the coordinates of a point|vector (an object that contains x and y properties)
  * to create a new point.
- * 
+ *
  * @func
  * @category vector
  * @sig Point|Vector -> Point|Vector -> Point|Vector
@@ -578,10 +582,10 @@ gama.rotateAround = R.curryN(3, function(angle, point, matrix) {
 //----------------------------------------------
 // polygon
 
-var minX = R.compose(R.min, R.map(R.prop('x')));
-var minY = R.compose(R.min, R.map(R.prop('y')));
-var maxX = R.compose(R.max, R.map(R.prop('x')));
-var maxY = R.compose(R.max, R.map(R.prop('y')));
+var minX = R.compose(R.apply(Math.min), R.map(R.prop('x')));
+var minY = R.compose(R.apply(Math.min), R.map(R.prop('y')));
+var maxX = R.compose(R.apply(Math.max), R.map(R.prop('x')));
+var maxY = R.compose(R.apply(Math.max), R.map(R.prop('y')));
 
 /**
  * Returns the top left vertex of polygon's bounding box.
@@ -697,13 +701,13 @@ gama.isConvex = function(polygon) {
 
 /**
  * Creates polygon from given rectangle.
- * 
+ *
  * @func
  * @category polygon
  * @sig Rectangle -> Rectangle
  * @param {Rectangle}
  * @return {Polygon}
- */ 
+ */
 gama.rectangle2polygon = function(rectangle) {
   return gama.Polygon([
     gama.Point(rectangle.x, rectangle.y),
