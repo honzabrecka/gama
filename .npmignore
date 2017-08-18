@@ -7,3 +7,5 @@
 /bower_components
 /docs
 /lib
+.circleci
+gulpfile.js
