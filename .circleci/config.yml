@@ -1,0 +1,37 @@
+version: 2
+jobs:
+  build-node8:
+    docker:
+      - image: mhart/alpine-node:8
+    working_directory: ~/w
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test
+  build-node6:
+    docker:
+      - image: mhart/alpine-node:6
+    working_directory: ~/w
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test
+  build-node4:
+    docker:
+      - image: mhart/alpine-node:4
+    working_directory: ~/w
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-node8
+      - build-node6
+      - build-node4
